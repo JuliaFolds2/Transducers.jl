@@ -1,3 +1,15 @@
+module TransducersBlockArraysExt
+
+if isdefined(Base, :get_extension)
+    using Transducers: @return_if_reduced, @next, @simd_if, complete
+    using Transducers.Setfield: @set
+    using BlockArrays
+else
+    using ..Transducers: @return_if_reduced, @next, @simd_if, complete
+    using ..Transducers.Setfield: @set
+    using ..BlockArrays
+end
+
 """
     _foldl_blockarray(rf, acc, coll::BlockArrays.BlockArray)
 """
@@ -40,9 +52,7 @@ end
     ::Val{N₋₁},
 ) where {RF,N₋₁}
 
-    blockaxes = BlockArrays.blockaxes
-
-    @inbounds for b in blockaxes(coll, 1)
+    @inbounds for b in BlockArrays.blockaxes(coll, 1)
         array = coll[b, block...]
         @simd_if rf for k in axes(array, 1)
             acc = @next(rf, acc, array[k, offset...])
@@ -51,4 +61,9 @@ end
     return acc
 end
 
+Transducers.__foldl__(rf, acc, coll::BlockArrays.BlockArray) =
+            _foldl_blockarray(rf, acc, coll)
+
 # TODO: write reduce for BlockArrays which can be done in the "natural" order
+
+end

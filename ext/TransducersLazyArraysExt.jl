@@ -1,3 +1,15 @@
+module TransducersLazyArraysExt
+
+if isdefined(Base, :get_extension)
+    using Transducers: @return_if_reduced, @next, @simd_if, complete, foldlargs, foldl_nocomplete
+    using Transducers.Setfield: @set
+    using LazyArrays
+else
+    using ..Transducers: @return_if_reduced, @next, @simd_if, complete, foldlargs, foldl_nocomplete
+    using ..Transducers.Setfield: @set
+    using ..LazyArrays
+end
+
 @inline function _foldl_lazy_cat_vectors(rf, acc, vectors)
     isempty(vectors) && return complete(rf, acc)
     result = @return_if_reduced foldlargs(acc, vectors...) do acc, arr
@@ -26,6 +38,12 @@ end
     end
     return complete(rf, acc)
 end
+
+Transducers.__foldl__(rf, acc, coll::LazyArrays.Hcat) = _foldl_lazy_hcat(rf, acc, coll)
+Transducers.__foldl__(rf, acc, coll::LazyArrays.Vcat) = _foldl_lazy_vcat(rf, acc, coll)
+
 # Vcat currently always is an `AbstractVector` or `AbstractMatrix`
 
 # TODO: write reduce for Vcat/Hcat which can be done in the "natural" order
+
+end

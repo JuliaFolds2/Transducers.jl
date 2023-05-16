@@ -1,3 +1,15 @@
+module TransducersOnlineStatsBaseExt
+
+if isdefined(Base, :get_extension)
+    using Transducers: reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer
+    using Transducers.InitialValues
+    using OnlineStatsBase
+else
+    using ..Transducers: reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer
+    using ..Transducers.InitialValues
+    using ..OnlineStatsBase
+end
+
 """
     Transducer(o::OnlineStat)
 
@@ -22,8 +34,8 @@ julia> collect(Transducer(Mean()), 1:4)
  2.5
 ```
 """
-Transducer(o::OnlineStatsBase.OnlineStat) =
-    Map(OnlineStatsBase.value) ∘ Scan(OnlineStatsBase.fit!, CopyInit(o))
+Transducers.Transducer(o::OnlineStatsBase.OnlineStat) =
+Transducers.Map(OnlineStatsBase.value) ∘ Transducers.Scan(OnlineStatsBase.fit!, Transducers.CopyInit(o))
 # TODO: implement `combine`
 
 """
@@ -58,16 +70,17 @@ Mean: n=4 | value=7.5
 [`foldxd`](@ref) can be used instead of `foldxt`.  However the usual caveats
 of code availability for Distributed.jl apply.
 """
-reducingfunction(xf::Transducer, stat::OnlineStatsBase.OnlineStat; kwargs...) =
-    reducingfunction(xf, reducingfunction(stat); kwargs...)
-reducingfunction(stat::OnlineStatsBase.OnlineStat) = OnlineStatReducingFunction(stat)
+Transducers.reducingfunction(xf::Transducer, stat::OnlineStatsBase.OnlineStat; kwargs...) =
+    Transducers.reducingfunction(xf, reducingfunction(stat); kwargs...)
 
-@inline _reducingfunction(xf, stat::OnlineStatsBase.OnlineStat; kwargs...) =
-    _reducingfunction(xf, reducingfunction(stat); kwargs...)
+@inline Transducers._reducingfunction(xf, stat::OnlineStatsBase.OnlineStat; kwargs...) =
+Transducers._reducingfunction(xf, reducingfunction(stat); kwargs...)
 
 struct OnlineStatReducingFunction{T<:OnlineStatsBase.OnlineStat} <: Function
     init::T
 end
+
+Transducers.reducingfunction(stat::OnlineStatsBase.OnlineStat) = OnlineStatReducingFunction(stat)
 
 InitialValues.hasinitialvalue(::Type{<:OnlineStatReducingFunction}) = true
 
@@ -84,16 +97,16 @@ function (::OnlineStatReducingFunction)(acc, x)
     return acc
 end
 
-combine(::OnlineStatReducingFunction{T}, a::T, b::T) where {T<:OnlineStatsBase.OnlineStat} =
+Transducers.combine(::OnlineStatReducingFunction{T}, a::T, b::T) where {T<:OnlineStatsBase.OnlineStat} =
     merge!(a, b)
 
-combine(
+    Transducers.combine(
     ::OnlineStatReducingFunction{T},
     a::Union{T,OSInit{T}},
     ::OSInit{T},
 ) where {T<:OnlineStatsBase.OnlineStat} = a
 
-combine(
+Transducers.combine(
     ::OnlineStatReducingFunction{T},
     ::OSInit{T},
     b::T,
@@ -112,25 +125,25 @@ function validate_reduce_ostat(stat)
 end
 
 # Method plumbing:
-foldxl(stat::OnlineStatsBase.OnlineStat, xform::Transducer, itr; kwargs...) =
+Transducers.foldxl(stat::OnlineStatsBase.OnlineStat, xform::Transducer, itr; kwargs...) =
     foldxl(reducingfunction(stat), xform, itr; kwargs...)
 
-foldxl(stat::OnlineStatsBase.OnlineStat, foldable; kwargs...) =
+Transducers.foldxl(stat::OnlineStatsBase.OnlineStat, foldable; kwargs...) =
     foldxl(reducingfunction(stat), extract_transducer(foldable)...; kwargs...)
 
-foldxt(stat::OnlineStatsBase.OnlineStat, xform::Transducer, itr; kwargs...) =
+Transducers.foldxt(stat::OnlineStatsBase.OnlineStat, xform::Transducer, itr; kwargs...) =
     foldxt(reducingfunction(validate_reduce_ostat(stat)), xform, itr; kwargs...)
 
-foldxt(stat::OnlineStatsBase.OnlineStat, foldable; kwargs...) = foldxt(
+Transducers.foldxt(stat::OnlineStatsBase.OnlineStat, foldable; kwargs...) = foldxt(
     reducingfunction(validate_reduce_ostat(stat)),
     extract_transducer(foldable)...;
     kwargs...,
 )
 
-foldxd(stat::OnlineStatsBase.OnlineStat, xform::Transducer, itr; kwargs...) =
+Transducers.foldxd(stat::OnlineStatsBase.OnlineStat, xform::Transducer, itr; kwargs...) =
     foldxd(reducingfunction(validate_reduce_ostat(stat)), xform, itr; kwargs...)
 
-foldxd(stat::OnlineStatsBase.OnlineStat, foldable; kwargs...) = foldxd(
+Transducers.foldxd(stat::OnlineStatsBase.OnlineStat, foldable; kwargs...) = foldxd(
     reducingfunction(validate_reduce_ostat(stat)),
     extract_transducer(foldable)...;
     kwargs...,
