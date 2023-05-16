@@ -1,6 +1,7 @@
 module TestOnlineStats
 
 include("preamble.jl")
+using OnlineStatsBase #required to pass a test
 using OnlineStats: Mean, EqualWeight
 using Transducers: InitialValue, combine, InitialValue, reducingfunction
 
