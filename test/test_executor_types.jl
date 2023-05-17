@@ -1,7 +1,7 @@
 module TestExecutorTypes
 
 include("preamble.jl")
-using Referenceables: referenceable
+using Referenceables: Referenceables, referenceable
 using Transducers: Executor, PreferParallel, executor_type, maybe_set_simd
 
 struct Opinionated{T<:Executor} <: AbstractVector{Int} end
