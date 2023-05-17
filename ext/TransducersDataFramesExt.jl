@@ -1,4 +1,4 @@
-module TransducersBlockArraysExt
+module TransducersDataFramessExt
 
 if isdefined(Base, :get_extension)
     using Transducers
