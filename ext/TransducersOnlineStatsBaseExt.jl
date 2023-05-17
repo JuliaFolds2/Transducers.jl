@@ -1,11 +1,11 @@
 module TransducersOnlineStatsBaseExt
 
 if isdefined(Base, :get_extension)
-    using Transducers: reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer
+    using Transducers: Transducers, reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer
     using Transducers.InitialValues
     using OnlineStatsBase
 else
-    using ..Transducers: reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer
+    using ..Transducers: Transducers, reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer
     using ..Transducers.InitialValues
     using ..OnlineStatsBase
 end

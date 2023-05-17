@@ -1,11 +1,11 @@
 module TransducersBlockArraysExt
 
 if isdefined(Base, :get_extension)
-    using Transducers: @return_if_reduced, @next, @simd_if, complete
+    using Transducers: Transducers, @return_if_reduced, @next, @simd_if, complete
     using Transducers.Setfield: @set
     using BlockArrays
 else
-    using ..Transducers: @return_if_reduced, @next, @simd_if, complete
+    using ..Transducers: Transducers, @return_if_reduced, @next, @simd_if, complete
     using ..Transducers.Setfield: @set
     using ..BlockArrays
 end
