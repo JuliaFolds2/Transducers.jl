@@ -170,6 +170,12 @@ include("comprehensions.jl")
 include("progress.jl")
 include("deprecated.jl")
 
+#used by TransducersOnlineStatsBaseExt, but exported directly in tests
+const OSNonZeroNObsError = ArgumentError(
+    "An `OnlineStat` with one or more observations cannot be used with " *
+    "`foldxt` and `foldxd`.",
+)
+
 if !isdefined(Base,:get_extension)
     using Requires
     function __init__()

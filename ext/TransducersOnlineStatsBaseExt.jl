@@ -1,12 +1,12 @@
 module TransducersOnlineStatsBaseExt
 
 if isdefined(Base, :get_extension)
-    using Transducers: Transducers, reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer
+    using Transducers: Transducers, reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer, OSNonZeroNObsError
     using Transducers.InitialValues
     using InitialValues: GenericInitialValue
     using OnlineStatsBase
 else
-    using ..Transducers: Transducers, reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer
+    using ..Transducers: Transducers, reducingfunction, Transducer, foldxl, foldxt, foldxd, extract_transducer, OSNonZeroNObsError
     using ..Transducers.InitialValues
     using ..InitialValues: GenericInitialValue
     using ..OnlineStatsBase
@@ -114,10 +114,7 @@ Transducers.combine(
     b::T,
 ) where {T<:OnlineStatsBase.OnlineStat} = b
 
-const OSNonZeroNObsError = ArgumentError(
-    "An `OnlineStat` with one or more observations cannot be used with " *
-    "`foldxt` and `foldxd`.",
-)
+
 
 function validate_reduce_ostat(stat)
     if OnlineStatsBase.nobs(stat) != 0
