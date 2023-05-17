@@ -148,3 +148,5 @@ Transducers.foldxd(stat::OnlineStatsBase.OnlineStat, foldable; kwargs...) = fold
     extract_transducer(foldable)...;
     kwargs...,
 )
+
+end #module
