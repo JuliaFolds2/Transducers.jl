@@ -4,52 +4,24 @@ on:
   push:
     branches:
       - master
-    tags: '*'
   pull_request:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        julia-version:
-          - '1.7'
-          - '1.6'
-        envname: ["main"]
-        include:
-          - julia-version: '1.0'
-            envname: "jl10"
-          - julia-version: '1.8'
-            envname: "main_v2"
-          - julia-version: '1.9'
-            envname: "main_v3"
-          - julia-version: 'nightly'
-            envname: "main_v3"
-      fail-fast: false
-    name: Test Julia ${{ matrix.julia-version }}
+        julia-version: ['1.0', '1.6', '1.7', '1.8', '1.9', 'nightly']
+        julia-arch: [x64, x86]
+        os: [ubuntu-latest]
+
     steps:
       - uses: actions/checkout@v2
-      - name: Setup julia
-        uses: julia-actions/setup-julia@v1
+      - uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.julia-version }}
-      - run: julia -e 'using Pkg; pkg"add Run@0.1"'
-      - run: julia -e 'using Run; Run.prepare("test/environments/${{ matrix.envname }}")'
-      - run: julia -e 'using Run; Run.test(project="test/environments/${{ matrix.envname }}")'
-      - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v1
-        with:
-          file: ./lcov.info
-          flags: Run.test
-          name: codecov-umbrella
-
-  # A job that succeeds if and only if all jobs in `test` succeed.
-  all-success:
-    if: always() && github.event.pull_request
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      # https://github.com/tkf/merge-conclusions-action
-      - uses: tkf/merge-conclusions-action@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          arch: ${{ matrix.julia-arch }}
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
+        # with:
+        #   annotate: true
