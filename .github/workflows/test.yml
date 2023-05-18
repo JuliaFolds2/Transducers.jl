@@ -21,6 +21,8 @@ jobs:
             envname: "jl10"
           - julia-version: '1.8'
             envname: "main_v2"
+          - julia-version: '1.9'
+            envname: "main_v3"
           - julia-version: 'nightly'
             envname: "main_v3"
       fail-fast: false
