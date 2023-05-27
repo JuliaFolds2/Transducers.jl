@@ -1329,7 +1329,6 @@ complete(rf::R_{Scanx}, result) = complete(inner(rf), unwrap(rf, result)[2])
 
 function next(rf::R_{Scanx}, result, input)
     wrapping(rf, result) do acc, iresult
-        @show acc, iresult, input
         if acc isa Unseen
             ival =  start(xform(rf).f, xform(rf).init)
             acc = xform(rf).f(ival, input)
