@@ -1255,6 +1255,97 @@ function next(rf::R_{Scan}, result, input)
 end
 
 """
+    Scanx(f, [init = Init])
+
+Accumulate input with binary function `f` and pass the accumulated
+result so far to the inner reduction step.
+
+The inner reducing step receives the sequence `y₁, y₂, y₃, ..., yₙ₊₁, ...`
+when the sequence `x₁, x₂, x₃, ..., xₙ, ...` is fed to `Scanx(f, [init])`.
+
+    y₁ = init
+    y₂ = f(init, x₁)
+    y₃ = f(y₁, x₂)
+    ...
+    yₙ₊₁ = f(yₙ₋₁, xₙ)
+
+This is a generalized version of the
+[_prefix sum_](https://en.wikipedia.org/wiki/Prefix_sum) and is the _exclusive scan_ counterpart to [`Scan`](@ref). Note that this implementation _includes_ the both the final element and the initial element. See `DropLast` to combine transducers to remove the final element.
+
+Note that the associativity of `f` is not required when the transducer
+is used in a process that gurantee an order, such as [`foldl`](@ref).
+
+Unless `f` is a function with known identity element such as `+` or `*`, the initial state `init` must be
+provided.
+
+$_use_initializer
+
+See also: [`ScanxEmit`](@ref), [`Iterated`](@ref).
+
+# Examples
+```jldoctest
+julia> using Transducers
+
+julia> collect(Scanx(*), 1:3)
+4-element Vector{Int64}:
+ 1
+ 1
+ 2
+ 6
+
+julia> collect(Scanx((a, b) -> a + b,0), 1:3)
+4-element Vector{Int64}:
+ 0
+ 1
+ 3
+ 6
+
+julia> collect(Scanx(*, 10), 1:3)
+4-element Vector{Int64}:
+ 10
+ 10
+ 20
+ 60
+```
+"""
+struct Scanx{F, T} <: Transducer
+    f::F
+    init::T
+end
+
+Scanx(f) = Scanx(_asmonoid(f), Init)  # TODO: DefaultInit?
+
+isexpansive(::Scanx) = false
+
+function start(rf::R_{Scanx}, result)
+    return wrap(rf, start(xform(rf).f, Unseen()), start(inner(rf), result))
+# For now, using `start` on `rf.f` is only for invoking `initialize`
+# on `rf.init`.  But maybe it's better to support `reducingfunction`?
+# For example, use `unwrap_all` before feeding the accumulator to the
+# inner reducing function?
+end
+
+complete(rf::R_{Scanx}, result) = complete(inner(rf), unwrap(rf, result)[2])
+
+function next(rf::R_{Scanx}, result, input)
+    wrapping(rf, result) do acc, iresult
+        @show acc, iresult, input
+        if acc isa Unseen
+            ival =  start(xform(rf).f, xform(rf).init)
+            acc = xform(rf).f(ival, input)
+            cur, n = acc, next(inner(rf), push!!(iresult,convert(typeof(input),ival)),input)
+        else
+            acc = xform(rf).f(acc, input)
+
+            cur, n = acc, next(inner(rf), iresult, acc)
+        end
+        # TODO: Don't call inner when `acc` is an `InitialValue`?
+        #       What about when `Reduced`?
+        return cur, n
+    end
+end
+
+"""
     ScanEmit(f, init[, onlast])
 
 Accumulate input `x` with a function `f` with the call signature
