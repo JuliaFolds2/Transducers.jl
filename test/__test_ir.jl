@@ -95,7 +95,7 @@ unsafe_setter(ys) =
 
         ir = llvm_ir(transduce, (rf, nothing, xs))
         @debug "foreach SIMD/$key" LLVM_IR=Text(ir)
-        @test nmatches(r"fmul <[0-9]+ x double>", ir) >= 4
+        @test nmatches(r"fmul <[0-9]+ x double>", ir) >= __width_ir_fmul
     end
 end
 
