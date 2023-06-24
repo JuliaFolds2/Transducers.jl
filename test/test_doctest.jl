@@ -10,7 +10,7 @@ using Transducers
 const __is32bit = Int == Int32
 
 
-if !__is32bit && Base.VERSION > v"1.6"
+if !__is32bit && Base.VERSION >= v"1.7"
     #the docs are meant with 64 bits in mind.
     #so we skip the doctests on 32 bits,because of the Int issue.
 
