@@ -247,16 +247,16 @@ using DataTools: rightif
 
 @test begin
     foldxl(rightif(<, last), filtered_pairs)
-end === Pair{Int64,Union{Missing, Int}}(2, 3)
+end === Pair{Int,Union{Missing, Int}}(2, 3)
 
-# ### Side note: why `Pair{Int64,Union{Missing,Int}}`?
+# ### Side note: why `Pair{Int,Union{Missing,Int}}`?
 #
 # The result type just above using `rightif` is
-# `Pair{Int64,Union{Missing,Int}}`:
+# `Pair{Int,Union{Missing,Int}}`:
 
 @test begin
     typeof(foldxl(rightif(<, last), filtered_pairs))
-end === Pair{Int64,Union{Missing,Int}}
+end === Pair{Int,Union{Missing,Int}}
 
 # This is because that's the element type of `pairs([1, 3, missing,
 # 0])` and `rightif` does not re-construct the input `Pair` like
@@ -264,7 +264,7 @@ end === Pair{Int64,Union{Missing,Int}}
 
 @test begin
     [1, 3, missing, 0] |> pairs |> first |> typeof
-end === Pair{Int64,Union{Missing, Int}}
+end === Pair{Int,Union{Missing, Int}}
 
 # We can avoid this by pre-processing the input with `MapSplat(Pair)`:
 
@@ -359,7 +359,7 @@ end
 @test begin
     [1, 3, missing, 0] |>
     pairs |>
-    MapSplat(Pair) |>  # avoid `Pair{Int64,Union{Missing, Int}}`
+    MapSplat(Pair) |>  # avoid `Pair{Int,Union{Missing, Int}}`
     foldxl(TeeRF(
         Map(ismissing ∘ last)'(+),  # count number of missings
         Filter(!(ismissing ∘ last))'(TeeRF(
