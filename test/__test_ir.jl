@@ -24,7 +24,8 @@ matchedlines(r, s) = [m.match for m in eachmatch(r, s)]
 anyunions(s) = matchedlines(r".*UNION.*", s)
 nmatches(r, s) = count(_ -> true, eachmatch(r, s))
 
-
+const __is32bit = Int == Int32
+const __width_ir_fmul = __is32bit ? 2 : 4
 @testset "map!" begin
     xf = opcompose(Filter(x -> -0.5 < x < 0.5), Map(x -> 2x))
     xs = Float64[]
@@ -35,16 +36,16 @@ nmatches(r, s) = count(_ -> true, eachmatch(r, s))
         # compiler becomes _extremely_ smart).
         ir = llvm_ir(map!, (xf, ys, xs))
         @debug "map!/history" LLVM_IR=Text(ir)
-        @test_broken nmatches(r"fmul <[0-9]+ x double>", ir) >= 4
-        @test_broken nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= 4
+        @test_broken nmatches(r"fmul <[0-9]+ x double>", ir) >= __width_ir_fmul
+        @test_broken nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= __width_ir_fmul
     end
 
     @testset for simd in [false, true, :ivdep]
         args = _prepare_map(xf, ys, xs, simd)
         ir = llvm_ir(_map!, args)
         @debug "map!/simd=$simd" LLVM_IR=Text(ir)
-        @test nmatches(r"fmul <[0-9]+ x double>", ir) >= 4
-        @test nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= 4
+        @test nmatches(r"fmul <[0-9]+ x double>", ir) >= __width_ir_fmul
+        @test nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= __width_ir_fmul
     end
 end
 
