@@ -30,7 +30,7 @@ Base.size(::Opinionated) = (0,)
         (referenceable([]), PreferParallel),
         (referenceable(Opinionated(SequentialEx)), SequentialEx),
     ]
-            #@test @inferred(executor_type(xs)) === ex 
+        @test @inferred(executor_type(xs)) === ex 
     end
 end
 
