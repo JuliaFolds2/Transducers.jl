@@ -54,7 +54,7 @@ prefixed_type_name(@nospecialize x) =
 # https://github.com/JuliaLang/julia/pull/29466
 
 const DenseSubVector{T} =
-    SubArray{T, 1, Vector{T}, Tuple{UnitRange{Int64}}, true}
+    SubArray{T, 1, Vector{T}, Tuple{UnitRange{Int}}, true}
 
 # https://github.com/JuliaLang/julia/pull/33533
 if VERSION < v"1.4"
