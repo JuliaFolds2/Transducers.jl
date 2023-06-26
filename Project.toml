@@ -1,7 +1,7 @@
 name = "Transducers"
 uuid = "28d57a85-8fef-5791-bfe6-a80928e7c999"
 authors = ["Takafumi Arakaki <aka.tkf@gmail.com>"]
-version = "0.4.76"
+version = "0.4.77"
 
 [deps]
 Adapt = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
@@ -33,7 +33,14 @@ Requires = "0.5, 1.0"
 Setfield = "0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1"
 SplittablesBase = "0.1.2"
 Tables = "0.2, 1.0"
-julia = "1"
+julia = "1.6"
+
+[extensions]
+TransducersBlockArraysExt = "BlockArrays"
+TransducersDataFramesExt = "DataFrames"
+TransducersLazyArraysExt = "LazyArrays"
+TransducersOnlineStatsBaseExt = "OnlineStatsBase"
+TransducersReferenceablesExt = "Referenceables"
 
 [extras]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
@@ -51,6 +58,7 @@ LiterateTest = "d77d25b0-90d3-4a16-b10a-412a9d48f625"
 LoadAllPackages = "b37bcd2d-1570-475d-a8c6-9b4fae6d0ba9"
 Maybe = "334f122f-1118-46cc-837f-bff747ee6f78"
 OnlineStats = "a15396b6-48d5-5d58-9928-6d29437db91e"
+OnlineStatsBase = "925886fa-5bf2-5e8e-b522-a9147a512338"
 PerformanceTestTools = "dc46b164-d16f-48ec-a853-60448fc869fe"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -63,4 +71,11 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TypedTables = "9d95f2ec-7b3d-5a63-8d20-e2491e220bb9"
 
 [targets]
-test = ["Aqua", "BlockArrays", "Compat", "DataFrames", "DataTools", "Dates", "Distributed", "Documenter", "Folds", "InteractiveUtils", "LazyArrays", "LiterateTest", "LoadAllPackages", "Maybe", "OnlineStats", "PerformanceTestTools", "Pkg", "Random", "Referenceables", "SparseArrays", "StaticArrays", "Statistics", "StructArrays", "Test", "TypedTables"]
+test = ["Aqua", "BlockArrays", "Compat", "DataFrames", "DataTools", "Dates", "Distributed", "Documenter", "Folds", "InteractiveUtils", "LazyArrays", "LiterateTest", "LoadAllPackages", "Maybe", "OnlineStats", "OnlineStatsBase", "PerformanceTestTools", "Pkg", "Random", "Referenceables", "SparseArrays", "StaticArrays", "Statistics", "StructArrays", "Test", "TypedTables"]
+
+[weakdeps]
+BlockArrays = "8e7c35d0-a365-5155-bbbb-fb81a777f24e"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+LazyArrays = "5078a376-72f3-5289-bfd5-ec5146d43c02"
+OnlineStatsBase = "925886fa-5bf2-5e8e-b522-a9147a512338"
+Referenceables = "42d2dcc6-99eb-4e98-b66c-637b7d73030e"

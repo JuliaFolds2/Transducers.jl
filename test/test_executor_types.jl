@@ -1,7 +1,7 @@
 module TestExecutorTypes
 
 include("preamble.jl")
-using Referenceables: referenceable
+using Referenceables: Referenceables, referenceable
 using Transducers: Executor, PreferParallel, executor_type, maybe_set_simd
 
 struct Opinionated{T<:Executor} <: AbstractVector{Int} end
@@ -30,7 +30,7 @@ Base.size(::Opinionated) = (0,)
         (referenceable([]), PreferParallel),
         (referenceable(Opinionated(SequentialEx)), SequentialEx),
     ]
-        @test @inferred(executor_type(xs)) === ex
+        @test @inferred(executor_type(xs)) === ex 
     end
 end
 

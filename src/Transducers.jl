@@ -170,28 +170,20 @@ include("comprehensions.jl")
 include("progress.jl")
 include("deprecated.jl")
 
-include("interop/blockarrays.jl")
-include("interop/lazyarrays.jl")
+#used by TransducersOnlineStatsBaseExt, but exported directly in tests
+const OSNonZeroNObsError = ArgumentError(
+    "An `OnlineStat` with one or more observations cannot be used with " *
+    "`foldxt` and `foldxd`.",
+)
 
-function __init__()
-    @require BlockArrays="8e7c35d0-a365-5155-bbbb-fb81a777f24e" begin
-        __foldl__(rf, acc, coll::BlockArrays.BlockArray) =
-            _foldl_blockarray(rf, acc, coll)
-    end
-    @require LazyArrays="5078a376-72f3-5289-bfd5-ec5146d43c02" begin
-        __foldl__(rf, acc, coll::LazyArrays.Hcat) =
-            _foldl_lazy_hcat(rf, acc, coll)
-        __foldl__(rf, acc, coll::LazyArrays.Vcat) =
-            _foldl_lazy_vcat(rf, acc, coll)
-    end
-    @require OnlineStatsBase="925886fa-5bf2-5e8e-b522-a9147a512338" begin
-        include("interop/onlinestats.jl")
-    end
-    @require DataFrames="a93c6f00-e57d-5684-b7b6-d8193f3e46c0" begin
-        include("interop/dataframes.jl")
-    end
-    @require Referenceables="42d2dcc6-99eb-4e98-b66c-637b7d73030e" begin
-        include("interop/referenceables.jl")
+if !isdefined(Base,:get_extension)
+    using Requires
+    function __init__()
+        @require BlockArrays="8e7c35d0-a365-5155-bbbb-fb81a777f24e" include("../ext/TransducersBlockArraysExt.jl")
+        @require LazyArrays="5078a376-72f3-5289-bfd5-ec5146d43c02" include("../ext/TransducersLazyArraysExt.jl")
+        @require DataFrames="a93c6f00-e57d-5684-b7b6-d8193f3e46c0" include("../ext/TransducersDataFramesExt.jl")
+        @require OnlineStatsBase="925886fa-5bf2-5e8e-b522-a9147a512338" include("../ext/TransducersOnlineStatsBaseExt.jl")
+        @require Referenceables="42d2dcc6-99eb-4e98-b66c-637b7d73030e" include("../ext/TransducersReferenceablesExt.jl")
     end
 end
 
