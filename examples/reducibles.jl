@@ -79,21 +79,17 @@ vov2 |> PartitionBy(isequal(1)) |> Zip(Map(copy), Map(sum)) |> collect
 # straightforward comparing to how to define an iterator:
 
 function Base.iterate(vov::VecOfVec, state=(1, 1))
-#+
-# Iterator `state` is a tuple of an index `i` to `vov.vectors` and an
-# index `j` to `vov.vectors[i]`:
+    #Iterator `state` is a tuple of an index `i` to `vov.vectors` and an
+    #index `j` to `vov.vectors[i]`:
     i, j = state
-#+
-# If `i` is larger than the number of items, we are done:
+    #If `i` is larger than the number of items, we are done:
     i > length(vov.vectors) && return nothing
-#+
-# If `j` is in bound, we are iterating the same sub-vector:
+    #If `j` is in bound, we are iterating the same sub-vector:
     vi = vov.vectors[i]
     if j <= length(vi)
         return vi[j], (i, j + 1)
     end
-#+
-# Otherwise, find the next non-empty sub-vector and start iterating it:
+    #Otherwise, find the next non-empty sub-vector and start iterating it:
     for k in i + 1:length(vov.vectors)
         vk = vov.vectors[k]
         if !isempty(vk)

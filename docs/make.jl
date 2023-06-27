@@ -25,7 +25,6 @@ EXAMPLE_PAGES = [
     "Tutorial: Missing values" => "tutorials/tutorial_missings.md",
     "Tutorial: Parallelism" => "tutorials/tutorial_parallel.md",
     "Parallel word count" => "tutorials/words.md",
-    "Upgrade to new `|>` of Transducers.jl 0.4.39" => "howto/upgrade-to-ixf.md",
     "Empty result handling" => "howto/empty_result_handling.md",
     "Writing transducers" => "howto/transducers.md",
     "Writing reducibles" => "howto/reducibles.md",
@@ -53,7 +52,7 @@ function transducers_literate(;
             inputfile,
             outputdir;
             config = config,
-            documenter = true,
+            flavor = Literate.DocumenterFlavor(),
             kwargs...,
         )
     end
@@ -150,10 +149,10 @@ makedocs(;
             "Comparison to iterators" => "explanation/comparison_to_iterators.md",
             "Glossary" => "explanation/glossary.md",
             "State machines" => "explanation/state_machines.md",
-            hide("Internals" => "explanation/internals.md"),
+            "Internals" => "explanation/internals.md",
         ],
     ],
-    repo = "https://github.com/JuliaFolds/Transducers.jl/blob/{commit}{path}#L{line}",
+    repo = "https://github.com/JuliaFolds2/Transducers.jl/blob/{commit}{path}#L{line}",
     sitename = "Transducers.jl",
     authors = "Takafumi Arakaki",
     strict = strict,
@@ -162,6 +161,6 @@ makedocs(;
 
 transducers_make_redirections()
 deploydocs(;
-    repo = "github.com/JuliaFolds/Transducers.jl",
+    repo = "github.com/JuliaFolds2/Transducers.jl",
     push_preview = should_push_preview(),
 )

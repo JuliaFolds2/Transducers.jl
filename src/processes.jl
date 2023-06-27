@@ -229,18 +229,16 @@ end
 @inline _getvalues(i, a, rest...) = ((@inbounds a[i]), _getvalues(i, rest...)...)
 
 # TODO: merge this with array implementation
-@static if VERSION >= v"1.1-"
-    @inline function __foldl__(
-            rf, init,
-            zs::Iterators.Zip{<:Tuple{Vararg{AbstractArray}}})
-        isempty(zs) && return complete(rf, init)
-        idxs = eachindex(zs.is...)
-        val = @next(rf, init, _getvalues(firstindex(idxs), zs.is...))
-        @simd_if rf for i in firstindex(idxs) + 1:lastindex(idxs)
-            val = @next(rf, val, _getvalues(i, zs.is...))
-        end
-        return complete(rf, val)
+@inline function __foldl__(
+        rf, init,
+        zs::Iterators.Zip{<:Tuple{Vararg{AbstractArray}}})
+    isempty(zs) && return complete(rf, init)
+    idxs = eachindex(zs.is...)
+    val = @next(rf, init, _getvalues(firstindex(idxs), zs.is...))
+    @simd_if rf for i in firstindex(idxs) + 1:lastindex(idxs)
+        val = @next(rf, val, _getvalues(i, zs.is...))
     end
+    return complete(rf, val)
 end
 
 ## Convert zip-of-products (ZoP) to product-of-zips (PoZ).
@@ -278,19 +276,17 @@ unproduct(x::AbstractArray) = axes(x)
     end
 end
 
-@static if VERSION >= v"1.1-"
-    @inline __foldl__(
-        rf,
-        init,
-        zs::Iterators.Zip{<:Tuple{
-            Vararg{Union{AbstractArray,Iterators.ProductIterator}},
-        }},
-    ) = __foldl__(
-        Reduction(Map(_make_zop_getvalues(zs.is)), rf),
-        init,
-        Iterators.product(map(splat(zip), _unzip(map(unproduct, zs.is)))...),
-    )
-end
+@inline __foldl__(
+    rf,
+    init,
+    zs::Iterators.Zip{<:Tuple{
+        Vararg{Union{AbstractArray,Iterators.ProductIterator}},
+    }},
+) = __foldl__(
+    Reduction(Map(_make_zop_getvalues(zs.is)), rf),
+    init,
+    Iterators.product(map(splat(zip), _unzip(map(unproduct, zs.is)))...),
+)
 
 @inline function __foldl__(rf0, init, cartesian::CartesianIndices)
     rf = Map(CartesianIndex)'(rf0)

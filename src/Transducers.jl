@@ -55,7 +55,6 @@ export AdHocFoldable,
     compose,
     dcollect,
     dcopy,
-    dreduce,
     dtransduce,
     eduction,
     foldxd,
@@ -105,41 +104,21 @@ using MicroCollections: UndefVector, UndefArray
 using Requires
 using Setfield: @lens, @set, set, setproperties
 using SplittablesBase: SplittablesBase, amount, halve
+import ConstructionBase
 
-# Dummy `ConstructionBase` module for supporting older `Setfield`:
-module ConstructionBase
-    using Setfield
-    @static if isdefined(Setfield, :constructorof)
-        const constructorof = Setfield.constructorof
-    else
-        const constructorof = Setfield.constructor_of
-    end
-end
+using CompositionsBase: ⨟
+export ⨟
 
-@eval using CompositionsBase: $(Symbol("⨟"))
-@eval export $(Symbol("⨟"))
+using Base.Threads: @spawn
 
-@static if VERSION >= v"1.3-alpha"
-    using Base.Threads: @spawn
-    function nonsticky!(task)
-        task.sticky = false
-        return task
-    end
-else
-    # Mock `@spawn` using `@async`:
-    @eval const $(Symbol("@spawn")) = $(Symbol("@async"))
-    nonsticky!(task) = task
+function nonsticky!(task)
+    task.sticky = false
+    return task
 end
 
 splat(f) = @static isdefined(Base, :Splat) ?  Base.Splat(f) : Base.splat(f)
 
-# `AbstractArrayOrBroadcasted` is an internal detail of `Base`.  But
-# we need this exact type for disambiguation...
-if isdefined(Base, :AbstractArrayOrBroadcasted)
-    const AbstractArrayOrBroadcasted = Base.AbstractArrayOrBroadcasted
-else
-    const AbstractArrayOrBroadcasted = Union{AbstractArray, Broadcasted}
-end
+const AbstractArrayOrBroadcasted = Union{AbstractArray, Broadcasted}
 
 include("AutoObjectsReStacker.jl")
 using .AutoObjectsReStacker: restack
@@ -168,7 +147,6 @@ include("lister.jl")
 include("show.jl")
 include("comprehensions.jl")
 include("progress.jl")
-include("deprecated.jl")
 
 #used by TransducersOnlineStatsBaseExt, but exported directly in tests
 const OSNonZeroNObsError = ArgumentError(

@@ -308,18 +308,6 @@ end
     @test isexpansive(FlagFirst()) == false
 end
 
-# https://clojuredocs.org/clojure.core/keep
-@testset "Keep" begin
-    xf = @test_deprecated Keep() do x
-        if x % 3 == 0
-            x
-        end
-    end
-    DEPWARN_ERROR || @testset for xs in iterator_variants(1:10)
-        @test xs |> xf |> collect == 3:3:10
-    end
-end
-
 @testset "KeepSomething" begin
     @test [Some(1), nothing, 2, Some(nothing)] |> KeepSomething() |> collect ==
           [1, 2, nothing]
