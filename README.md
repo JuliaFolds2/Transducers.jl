@@ -28,10 +28,10 @@ execution.  If a transducer is composed of such transducers, it can be
 automatically re-used both in sequential (`foldl` etc.) and parallel
 (`reduce` etc.) contexts.
 
-See more in the [documentation](https://juliafolds.github.io/Transducers.jl/dev).
+See more in the [documentation](https://juliafolds2.github.io/Transducers.jl/dev).
 
 If you are interested in parallel programming in general, see also:
-[A quick introduction to data parallelism in Julia](https://juliafolds.github.io/data-parallelism/tutorials/quick-introduction/)
+[A quick introduction to data parallelism in Julia](https://juliafolds2.github.io/data-parallelism/tutorials/quick-introduction/)
 
 ## Installation
 
@@ -65,9 +65,9 @@ GPU-based parallelism.
   construct a data collection.
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://juliafolds.github.io/Transducers.jl/stable
+[docs-stable-url]: https://juliafolds2.github.io/Transducers.jl/stable
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-dev-url]: https://juliafolds.github.io/Transducers.jl/dev
+[docs-dev-url]: https://juliafolds2.github.io/Transducers.jl/dev
 [travis-img]: https://travis-ci.com/JuliaFolds/Transducers.jl.svg?branch=master
 [travis-url]: https://travis-ci.com/JuliaFolds/Transducers.jl
 [codecov-img]: http://codecov.io/github/JuliaFolds/Transducers.jl/coverage.svg?branch=master
