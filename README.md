@@ -31,7 +31,7 @@ automatically re-used both in sequential (`foldl` etc.) and parallel
 See more in the [documentation](https://juliafolds2.github.io/Transducers.jl/dev).
 
 If you are interested in parallel programming in general, see also:
-[A quick introduction to data parallelism in Julia](https://juliafolds2.github.io/data-parallelism/tutorials/quick-introduction/)
+[A quick introduction to data parallelism in Julia](https://juliafolds.github.io/data-parallelism/tutorials/quick-introduction/)
 
 ## Installation
 
