@@ -14,7 +14,7 @@ hist_seq(xf, xs; kwargs...) =
     foldl(mergehist!, xf, xs; init=initializer, kwargs...)
 
 hist_assoc(xf, xs; kwargs...) =
-    reduce(mergehist!, xf, xs; init=initializer, kwargs...)
+    foldxt(mergehist!, xf, xs; init=initializer, kwargs...)
 
 hist_comm(xf, xs; kwargs...) =
     reduce_commutative(mergehist!, xf, xs; init=initializer, kwargs...)

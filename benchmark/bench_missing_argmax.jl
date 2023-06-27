@@ -30,8 +30,8 @@ argext_step(should_update) =
 
 xf_scanext(should_update) = Scan(argext_step(should_update), nothing)
 
-xf_argmax = Enumerate() |>
-    OfType(Tuple{Integer, Number}) |>
+xf_argmax = Enumerate() ⨟
+    OfType(Tuple{Integer, Number}) ⨟
     xf_scanext(<)
 
 suite = BenchmarkGroup()
