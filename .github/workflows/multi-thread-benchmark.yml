@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@latest
         with:
-          version: 1.7
+          version: 1.9
       - name: Install dependencies
         run: julia -e 'using Pkg; pkg"add PkgBenchmark BenchmarkCI@0.1"'
       - name: Run benchmarks
@@ -27,7 +27,7 @@ jobs:
           using BenchmarkCI;
           BenchmarkCI.pushresult(;
               title = "Multi-thread benchmark result",
-              url = "git@github.com:JuliaFolds/Transducers-data.git",
+              url = "git@github.com:JuliaFolds2/Transducers-data.git",
               branch = "multi-thread-benchmark-results",
           );
           '
