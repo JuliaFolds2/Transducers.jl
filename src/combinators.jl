@@ -410,7 +410,7 @@ julia> averaging2 = function merge_average((sum1, count1), (sum2, count2))
            sum / count
        end |> Map() do x
            (x, 1)
-       end';  # ' here is important
+       end';  # `'` here is important;
 
 julia> foldl(averaging2, Filter(isodd), 1:5)
 3.0

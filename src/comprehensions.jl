@@ -167,7 +167,7 @@ julia> rf, itr2 = Transducers.retransform(+, itr1);
 julia> itr2 === itr0
 true
 
-julia> rf(1, 3) == reducingfunction(Map(double), +)
+julia> rf == reducingfunction(Map(double), +)
 true
 ```
 """

@@ -93,7 +93,6 @@ PreferParallel
 ```@docs
 SplitBy
 Transducer(::Transducers.Comprehension)
-Transducer(::OnlineStats.OnlineStat)
 reducingfunction
 Completing
 Init
@@ -103,5 +102,7 @@ right
 setinput
 AdHocFoldable
 withprogress
+Base.mapfoldl
+Base.mapreduce
 ```
 
