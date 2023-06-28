@@ -56,13 +56,13 @@ end
 suite["xf_nota"] = @benchmarkable(
     foldl(+, ed),
     setup=(ed = eduction(
-        MapSplat(*) |> NotA(Missing),
+        MapSplat(*) ⨟ NotA(Missing),
         zip(random_missings.(($n, $n))...))))
 
 suite["xf"] = @benchmarkable(
     foldl(+, ed),
     setup=(ed = eduction(
-        OfType(Tuple{Vararg{Number}}) |> MapSplat(*),
+        OfType(Tuple{Vararg{Number}}) ⨟ MapSplat(*),
         zip(random_missings.(($n, $n))...))))
 
 # This is a bit "cheating" since it's using non-public API.  It is
