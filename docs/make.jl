@@ -11,6 +11,10 @@ export JULIA_LOAD_PATH="@"
 exec ${JULIA} "${BASH_SOURCE[0]}" "$@"
 =#
 
+# if build process is getting stuck, it's probably because docs code that's running
+# enable this to see what it's trying to run
+ENV["JULIA_DEBUG"] = "Documenter"
+
 import BangBang
 import JSON
 import Literate
@@ -55,6 +59,17 @@ function transducers_literate(;
             flavor = Literate.DocumenterFlavor(),
             kwargs...,
         )
+    end
+end
+
+# if we don't do this can wind up with stale files and bad things can happen
+function transducers_rm_literate()
+    dir = joinpath(@__DIR__,"src")
+    for d ∈ joinpath.((dir,), ("howto", "tutorials"))
+        if isdir(d)
+            @info("removing stale directory $d")
+            rm(d, recursive=true, force=true)
+        end
     end
 end
 
@@ -125,12 +140,13 @@ function should_push_preview(event_path = get(ENV, "GITHUB_EVENT_PATH", nothing)
 end
 
 Random.seed!(1234)
+transducers_rm_literate()
 transducers_rm_duplicated_docs()
 transducers_literate()
 
 examples = EXAMPLE_PAGES
 strict = get(ENV, "CI", "false") == "true"
-#doctest = get(ENV, "CI", "false") == "true"
+doctest = get(ENV, "CI", "false") == "true"
 doctest = true
 
 tutorials = filter(((_, path),) -> startswith(path, "tutorials/"), examples)
@@ -153,7 +169,7 @@ makedocs(;
             "Internals" => "explanation/internals.md",
         ],
     ],
-    repo = "https://github.com/JuliaFolds2/Transducers.jl/blob/{commit}{path}#L{line}",
+    #repo = "https://github.com/JuliaFolds2/Transducers.jl/blob/{commit}{path}#L{line}",
     sitename = "Transducers.jl",
     authors = "Takafumi Arakaki",
     strict = strict,
