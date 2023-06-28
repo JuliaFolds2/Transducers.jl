@@ -1202,7 +1202,7 @@ reducing function `rf`, `Init(rf₀)` is called for the bottom reducing
 function `rf₀` of `rf`:
 
 ```jldoctest Init
-julia> rf = Take(3)'(+);  # `+` is the bottom reducing function
+julia> rf = Take(3)'(+);  # + is the bottom reducing function
 
 julia> acc = Transducers.start(rf, Init);
 
