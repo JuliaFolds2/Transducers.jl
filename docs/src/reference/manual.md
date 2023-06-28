@@ -105,12 +105,3 @@ AdHocFoldable
 withprogress
 ```
 
-## Deprecated
-
-```@docs
-reduce
-dreduce
-mapfoldl
-mapreduce
-Keep
-```

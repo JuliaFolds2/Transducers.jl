@@ -130,7 +130,8 @@ transducers_literate()
 
 examples = EXAMPLE_PAGES
 strict = get(ENV, "CI", "false") == "true"
-doctest = get(ENV, "CI", "false") == "true"
+#doctest = get(ENV, "CI", "false") == "true"
+doctest = true
 
 tutorials = filter(((_, path),) -> startswith(path, "tutorials/"), examples)
 howto = filter(((_, path),) -> startswith(path, "howto/"), examples)
