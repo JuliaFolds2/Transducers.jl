@@ -13,7 +13,7 @@ exec ${JULIA} "${BASH_SOURCE[0]}" "$@"
 
 # if build process is getting stuck, it's probably because docs code that's running
 # enable this to see what it's trying to run
-ENV["JULIA_DEBUG"] = "Documenter"
+#ENV["JULIA_DEBUG"] = "Documenter"
 
 import BangBang
 import JSON
