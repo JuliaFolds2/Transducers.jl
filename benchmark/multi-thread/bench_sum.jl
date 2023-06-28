@@ -45,7 +45,7 @@ for (label, xs) in inputtable
     s1["foldl"] = @benchmarkable foldl(+, $xf, $xs; simd = true)
     s2 = s1["reduce"] = BenchmarkGroup()
     for basesize in 2 .^ (7:9)
-        s2["basesize=$basesize"] = @benchmarkable reduce(
+        s2["basesize=$basesize"] = @benchmarkable foldxt(
             +,
             $xf,
             $xs;
