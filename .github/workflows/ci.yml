@@ -19,9 +19,6 @@ jobs:
         arch:
           - x64
         include:
-          - os: windows-latest
-            version: '1'
-            arch: x86
           - os: ubuntu-latest
             version: 'nightly'
             arch: x64
