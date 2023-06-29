@@ -80,7 +80,7 @@ Transducers.jl 0.4.39 also exposes reducing function (RF)
 transformation with [`xf'(rf)`](@ref adjoint) (`adjoint`):
 
 ```jldoctest ixf
-julia> rf = Filter(isodd)'(+);  # equivalent to (acc, x) -> isodd(x) ? acc + x : acc
+julia> rf = Filter(isodd)'(+);  # equivalent to (acc, x) -> isodd(x) ? acc + x : acc;
 
 julia> rf(0, 2)  # `2` filtered out
 0

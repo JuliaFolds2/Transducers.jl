@@ -16,13 +16,11 @@ struct AddOneIfInt <: Transducer end
 
 function Transducers.next(rf::R_{AddOneIfInt}, result, input)
     if input isa Int
-#+
-# Output `input + 1` is passed to the "inner" reducing step:
+    #Output `input + 1` is passed to the "inner" reducing step:
         next(inner(rf), result, input + 1)
     else
-#+
-# Filtering out is done by "doing nothing"; return `result`-so-far
-# as-is:
+    #Filtering out is done by "doing nothing"; return `result`-so-far
+    #as-is:
         result
     end
 end
@@ -73,9 +71,8 @@ end
 
 function Transducers.next(rf::R_{RandomRecall}, result, input)
     wrapping(rf, result) do (buffer, rng), iresult
-#+
-# Pickup a random element to be passed to the inner reducing function.
-# Replace it with the new incoming one in the buffer:
+    #Pickup a random element to be passed to the inner reducing function.
+    #Replace it with the new incoming one in the buffer:
         if length(buffer) < xform(rf).history
             push!(buffer, input)
             iinput = rand(rng, buffer)
@@ -84,13 +81,13 @@ function Transducers.next(rf::R_{RandomRecall}, result, input)
             iinput = buffer[i]
             buffer[i] = input
         end
-#+
-# Call the inner reducing function.  Note that `iresult` unwrapped by
-# [`Transducers.wrapping`](@ref) must be passed to `next`:
+        #Call the inner reducing function.  Note that `iresult` unwrapped by
         iresult = next(inner(rf), iresult, iinput)
         return (buffer, rng), iresult
     end
 end
+
+# ([`Transducers.wrapping`](@ref) must be passed to `next`.)
 
 # Any transducer with custom [`Transducers.start`](@ref) must have a
 # corresponding [`Transducers.complete`](@ref).  It is responsible for
@@ -119,13 +116,11 @@ end  # hide
 function Transducers.complete(rf::R_{RandomRecall}, result)
     (buffer, _), iresult = unwrap(rf, result)
     for x in buffer
-#+
-# Note that inner `next` can be called more than one time inside
-# `next` and `complete`:
+    #Note that inner `next` can be called more than one time inside
+    #`next` and `complete`:
         iresult = next(inner(rf), iresult, x)
     end
-#+
-# `complete` for inner reducing function must be called exactly once:
+    #`complete` for inner reducing function must be called exactly once:
     return complete(inner(rf), iresult)
 end
 

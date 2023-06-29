@@ -10,11 +10,11 @@ xs[xs.>0.001] .= needle
 suite = BenchmarkGroup()
 suite["base"] = @benchmarkable findall(isequal($needle), $xs)
 suite["xf-array"] = @benchmarkable collect(
-    Enumerate() |> Filter(!isequal($needle) ∘ last) |> Map(first),
+    Enumerate() ⨟ Filter(!isequal($needle) ∘ last) ⨟ Map(first),
     $xs,
 )
 suite["xf-iter"] = @benchmarkable collect(
-    Enumerate() |> Filter(isequal($needle) ∘ last) |> Map(first),
+    Enumerate() ⨟ Filter(isequal($needle) ∘ last) ⨟ Map(first),
     Transducers.NoAdjoint(x for x in $xs),
 )
 

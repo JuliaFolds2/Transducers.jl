@@ -30,8 +30,8 @@ end
 
 suite = BenchmarkGroup()
 
-xf = PartitionBy(x -> x > 0) |>
-    Filter(xs -> mean(abs, xs) < 1.0) |>
+xf = PartitionBy(x -> x > 0) ⨟
+    Filter(xs -> mean(abs, xs) < 1.0) ⨟
     Map(prod)
 
 n = 10^5

@@ -15,7 +15,7 @@ end
 
 suite = BenchmarkGroup()
 
-xf = Filter(x -> -0.5 < x < 0.5) |> Map(x -> 2x)
+xf = Filter(x -> -0.5 < x < 0.5) ⨟ Map(x -> 2x)
 n = 10^5
 
 let xs = randn(10)

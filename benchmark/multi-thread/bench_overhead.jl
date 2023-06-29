@@ -8,21 +8,21 @@ suite = BenchmarkGroup()
 let n = 64
     # s = suite["n=$n"] = BenchmarkGroup()
     s = suite  # there is only one `n` for now
-    s["default"] = @benchmarkable reduce(
+    s["default"] = @benchmarkable foldxt(
         right,
         Map(_ -> nothing),
         1:$n;
         basesize = 1,
         # stoppable = nothing,
     )
-    s["stoppable=true"] = @benchmarkable reduce(
+    s["stoppable=true"] = @benchmarkable foldxt(
         right,
         Map(_ -> nothing),
         1:$n;
         basesize = 1,
         stoppable = true,
     )
-    s["stoppable=false"] = @benchmarkable reduce(
+    s["stoppable=false"] = @benchmarkable foldxt(
         right,
         Map(_ -> nothing),
         1:$n;

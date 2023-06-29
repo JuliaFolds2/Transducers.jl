@@ -24,8 +24,10 @@ foldxt(+, Map(sin), xs)
 
 # ### Process-based parallelism
 
+#src NOTE: do *NOT* use #md addprocs: Documenter.jl will ignore it and hang!
+
 using Distributed
-#md addprocs(4)
+#addprocs(4)  # add worker processes
 
 foldxd(+, Map(sin), xs)
 
@@ -43,11 +45,9 @@ foldxt(+, (sin(x) for x in xs if abs(x) < 1); basesize = 500_000)
 
 #-
 
-if VERSION >= v"1.3"                                                   #src
-    @test begin
-        foldxt(+, (x * y for x in 1:3, y in 1:3))
-    end == 36
-end                                                                    #src
+@test begin
+    foldxt(+, (x * y for x in 1:3, y in 1:3))
+end == 36
 
 #-
 
@@ -370,7 +370,6 @@ nothing                                                              # hide
 # Conveniently, `mergewith!(+)` is the curried form `(args...) ->
 # mergewith!(+, args...)`:
 
-using Compat: mergewith!  # not required in Julia >= 1.5
 rf! = mergewith!(+)
 @test begin
     rf!(Dict(:a => 1, :b => 2), Dict(:b => 3, :c => 4))

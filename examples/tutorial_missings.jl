@@ -70,7 +70,7 @@ end == 34
 
 xf_mdot = opcompose(OfType(Tuple{Vararg{Number}}), MapSplat(*));
 
-# or equivalently (in Julia ≥ 1.5):
+# or equivalently
 #
 # ```julia
 # OfType(Tuple{Vararg{Number}}) ⨟ MapSplat(*)

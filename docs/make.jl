@@ -11,6 +11,10 @@ export JULIA_LOAD_PATH="@"
 exec ${JULIA} "${BASH_SOURCE[0]}" "$@"
 =#
 
+# if build process is getting stuck, it's probably because docs code that's running
+# enable this to see what it's trying to run
+#ENV["JULIA_DEBUG"] = "Documenter"
+
 import BangBang
 import JSON
 import Literate
@@ -25,7 +29,6 @@ EXAMPLE_PAGES = [
     "Tutorial: Missing values" => "tutorials/tutorial_missings.md",
     "Tutorial: Parallelism" => "tutorials/tutorial_parallel.md",
     "Parallel word count" => "tutorials/words.md",
-    "Upgrade to new `|>` of Transducers.jl 0.4.39" => "howto/upgrade-to-ixf.md",
     "Empty result handling" => "howto/empty_result_handling.md",
     "Writing transducers" => "howto/transducers.md",
     "Writing reducibles" => "howto/reducibles.md",
@@ -53,9 +56,20 @@ function transducers_literate(;
             inputfile,
             outputdir;
             config = config,
-            documenter = true,
+            flavor = Literate.DocumenterFlavor(),
             kwargs...,
         )
+    end
+end
+
+# if we don't do this can wind up with stale files and bad things can happen
+function transducers_rm_literate()
+    dir = joinpath(@__DIR__,"src")
+    for d ∈ joinpath.((dir,), ("howto", "tutorials"))
+        if isdir(d)
+            @info("removing stale directory $d")
+            rm(d, recursive=true, force=true)
+        end
     end
 end
 
@@ -126,12 +140,14 @@ function should_push_preview(event_path = get(ENV, "GITHUB_EVENT_PATH", nothing)
 end
 
 Random.seed!(1234)
+transducers_rm_literate()
 transducers_rm_duplicated_docs()
 transducers_literate()
 
 examples = EXAMPLE_PAGES
 strict = get(ENV, "CI", "false") == "true"
 doctest = get(ENV, "CI", "false") == "true"
+doctest = true
 
 tutorials = filter(((_, path),) -> startswith(path, "tutorials/"), examples)
 howto = filter(((_, path),) -> startswith(path, "howto/"), examples)
@@ -150,10 +166,10 @@ makedocs(;
             "Comparison to iterators" => "explanation/comparison_to_iterators.md",
             "Glossary" => "explanation/glossary.md",
             "State machines" => "explanation/state_machines.md",
-            hide("Internals" => "explanation/internals.md"),
+            "Internals" => "explanation/internals.md",
         ],
     ],
-    repo = "https://github.com/JuliaFolds/Transducers.jl/blob/{commit}{path}#L{line}",
+    #repo = "https://github.com/JuliaFolds2/Transducers.jl/blob/{commit}{path}#L{line}",
     sitename = "Transducers.jl",
     authors = "Takafumi Arakaki",
     strict = strict,
@@ -162,6 +178,6 @@ makedocs(;
 
 transducers_make_redirections()
 deploydocs(;
-    repo = "github.com/JuliaFolds/Transducers.jl",
+    repo = "github.com/JuliaFolds2/Transducers.jl",
     push_preview = should_push_preview(),
 )

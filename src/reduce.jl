@@ -135,11 +135,7 @@ function _transduce_assoc_nocomplete(
     ctx::DACContext = NoopDACContext(),
 ) where {F}
     reducible = SizedReducible(maybe_collect(coll), basesize)
-    @static if VERSION >= v"1.3-alpha"
-        return _reduce(ctx, rf, init, reducible)
-    else
-        return _reduce_threads_for(rf, init, reducible)
-    end
+    return _reduce(ctx, rf, init, reducible)
 end
 
 function _reduce(ctx, rf::R, init::I, reducible::Reducible) where {R,I}

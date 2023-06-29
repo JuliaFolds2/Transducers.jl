@@ -49,26 +49,26 @@ let xs = random_missings(n)
     @assert manual_missing_dot(xs, ys) == foldl(
         +,
         eduction(
-            OfType(Tuple{Vararg{Number}}) |> MapSplat(*),
+            OfType(Tuple{Vararg{Number}}) ⨟ MapSplat(*),
             zip(xs, ys)))
 end
 
 suite["xf_nota"] = @benchmarkable(
     foldl(+, ed),
     setup=(ed = eduction(
-        MapSplat(*) |> NotA(Missing),
+        MapSplat(*) ⨟ NotA(Missing),
         zip(random_missings.(($n, $n))...))))
 
 suite["xf"] = @benchmarkable(
     foldl(+, ed),
     setup=(ed = eduction(
-        OfType(Tuple{Vararg{Number}}) |> MapSplat(*),
+        OfType(Tuple{Vararg{Number}}) ⨟ MapSplat(*),
         zip(random_missings.(($n, $n))...))))
 
 # This is a bit "cheating" since it's using non-public API.  It is
 # just to show the lower-bound of Transducers.jl runtime:
 rf_nota = reducingfunction(
-    MapSplat(*) |> NotA(Missing),
+    MapSplat(*) ⨟ NotA(Missing),
     +;
     # simd = true,
 )
@@ -77,7 +77,7 @@ suite["rf_nota"] = @benchmarkable(
     setup=(zs = zip(random_missings.(($n, $n))...)))
 
 rf_oftype = reducingfunction(
-    OfType(Tuple{Vararg{Number}}) |> MapSplat(*),
+    OfType(Tuple{Vararg{Number}}) ⨟ MapSplat(*),
     +;
     # simd = true,
 )

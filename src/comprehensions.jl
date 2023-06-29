@@ -98,7 +98,7 @@ julia> double(x) = 2x;
 
 julia> xs = 1:10;
 
-julia> xf, foldable = Transducers.extract_transducer(double(x) for x in xs);
+julia> xf, foldable = Transducers.extract_transducer(Iterators.map(double, xs));
 
 julia> xf == Map(double)
 true
@@ -148,6 +148,10 @@ extract_transducer(itr::NoAdjoint) = IdentityTransducer(), itr.itr
 Extract transformations in `rf` and `itr` and use the appropriate adjoint for
 better performance.
 
+Note that the reducing function extracted from a comprehension such as `(f(x) for x ∈ itr)`
+may not be `==` to `f` because of the way generator comprehensions work in Julia.
+Use `Iterators.map` to specify an exact mapping function.
+
 # Examples
 ```jldoctest
 julia> using Transducers
@@ -156,7 +160,7 @@ julia> double(x) = 2x;
 
 julia> itr0 = 1:10;
 
-julia> itr1 = (double(x) for x in itr0);
+julia> itr1 = Iterators.map(double, itr0);
 
 julia> rf, itr2 = Transducers.retransform(+, itr1);
 
