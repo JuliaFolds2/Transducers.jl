@@ -45,4 +45,4 @@ jobs:
       - uses: julia-actions/julia-docdeploy@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCUMENTER_KEY: ${{ secrets.SSH_KEY }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
