@@ -11,8 +11,8 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
-      experimental: false
       matrix:
+        experimental: [false]
         version:
           - '1.6'
           - '1' # automatically expands to the latest stable 1.x release of Julia
