@@ -1,0 +1,82 @@
+name: benchmarks
+on:
+  pull_request:
+  push:
+    branches: [master]
+    tags: ['*']
+jobs:
+  benches:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '1' # automatically expands to the latest stable 1.x release of Julia
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+        include:
+          - os: ubuntu-latest
+            version: 'nightly'
+            arch: x64
+            continue-on-error: true
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - uses: julia-actions/cache@v1
+      - uses: julia-actions/julia-buildpkg@v1
+      - name: Install dependencies
+        run: julia -e 'using Pkg; pkg"add PkgBenchmark BenchmarkCI"'
+      - name: run sequential benchmarks
+        run: julia -e '
+          using PkgBenchmark, BenchmarkCI;
+          BenchmarkCI.judge(
+              PkgBenchmark.BenchmarkConfig(
+                  env = Dict(
+                      "JULIA_NUM_THREADS" => "1",
+                      "OMP_NUM_THREADS" => "1",
+                  ),
+              );
+          );
+          '
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SSH_KEY: ${{ secrets.DATA_SSH_KEY }}
+      - name: push results
+        run: julia -e '
+          using BenchmarkCI;
+          BenchmarkCI.pushresult(;
+              url = "git@github.com:JuliaFolds2/Transducers-data.git",
+          );
+          '
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SSH_KEY: ${{ secrets.DATA_SSH_KEY }}
+      - name: run multithread benchmarks
+        run: julia -e '
+          using PkgBenchmark, BenchmarkCI;
+          BenchmarkCI.judge(
+            PkgBenchmark.BenchmarkConfig(env = Dict("JULIA_NUM_THREADS" => "4"));
+            script = "benchmark/multi-thread/benchmarks.jl",
+            project = "benchmark",
+          );
+          '
+        env:
+          JULIA_NUM_THREADS: 4
+      - name: push multithread results
+        run: julia -e '
+          using BenchmarkCI;
+          BenchmarkCI.pushresult(;
+              title = "Multi-thread benchmark result",
+              url = "git@github.com:JuliaFolds2/Transducers-data.git",
+              branch = "multi-thread-benchmark-results",
+          );
+          '
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SSH_KEY: ${{ secrets.DATA_SSH_KEY }}
