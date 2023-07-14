@@ -54,9 +54,15 @@ end
     @test gd1 == Dict("1" => [1, 1], "2" => [2, 2], "3" => [3])
     @test gd2 == gd3
     @test gd4 == Dict(2 => [2, 4], 3 => [3], 6 => [6], 1 => [1])
+    @test get(gd1, "1", Int[]) == [1, 1]
+    @test get(gd1, "9", Int[]) == Int[]
     @test Dict(gd1) == Dict("1" => [1, 1], "2" => [2, 2], "3" => [3])
     @test Dict(gd2) == Dict(gd3)
     @test Dict(gd4) == Dict(2 => [2, 4], 3 => [3], 6 => [6], 1 => [1])
+
+    # ensure we can use it in foldxt
+    r1 = gd1 |> MapSplat((k, v) -> k=>sum(v)) |> tcollect
+    @test Set(r1) == Set(["1"=>2, "2"=>4, "3"=>3])  # order not guaranteed
 end
 
 end  # module
