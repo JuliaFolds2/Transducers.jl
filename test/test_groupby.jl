@@ -54,9 +54,21 @@ end
     @test gd1 == Dict("1" => [1, 1], "2" => [2, 2], "3" => [3])
     @test gd2 == gd3
     @test gd4 == Dict(2 => [2, 4], 3 => [3], 6 => [6], 1 => [1])
+    @test get(gd1, "1", Int[]) == [1, 1]
+    @test get(gd1, "9", Int[]) == Int[]
     @test Dict(gd1) == Dict("1" => [1, 1], "2" => [2, 2], "3" => [3])
     @test Dict(gd2) == Dict(gd3)
     @test Dict(gd4) == Dict(2 => [2, 4], 3 => [3], 6 => [6], 1 => [1])
+
+    # ensure we can use GroupByViewDict it in foldxt
+    r1 = gd1 |> MapSplat((k, v) -> k=>sum(v)) |> tcollect
+    @test Set(r1) == Set(["1"=>2, "2"=>4, "3"=>3])  # order not guaranteed
+
+    # TODO: one would expect this to work, but it doesn't, because foldxt calls combine,
+    # which needs to know about the inner reducing function (here push!!) which it can't
+    # infer from this lambda
+    gb = GroupBy(string, (y, (k, v)) -> push!!(y, v))
+    @test_broken foldxt(right, gb, [1,2,1,2,3])
 end
 
 end  # module

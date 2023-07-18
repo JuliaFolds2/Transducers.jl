@@ -1,6 +1,6 @@
 """
-    GroupBy(key, rf, [init])
     GroupBy(key, xf::Transducer, [step = right, [init]])
+    GroupBy(key, rf, [init])
 
 Group the input stream by a function `key` and then fan-out each group
 of key-value pairs to the reducing function `rf`.
@@ -30,6 +30,19 @@ That is to say,
   intermediate result dictionary (of type `Dict{K, Y}`) accumulating
   the current and all preceding results is then fed into the
   `downstream`.
+
+The signature `GroupBy(key, ::Transducer, [step, [init]])` is preferred since
+results can only be combined with [`Transducers.combine`](@ref) (e.g. for use in `foldxt`)
+when the inner-most reducing function is accessible.  For example, instead of
+```
+GroupBy(key, (y, (k, v)) -> y + v.a, init)
+```
+one should write
+```
+GroupBy(key, Map(kv -> kv[2].a)'(+), init)
+```
+The difference is that in the latter case Transducers can figure out how to sum separately from
+accessing the value.
 
 See also `groupreduce` in
 [SplitApplyCombine.jl](https://github.com/JuliaData/SplitApplyCombine.jl).
@@ -139,8 +152,23 @@ function Base.getindex(dict::GroupByViewDict{<:Any,<:Any,S}, key) where {S}
 end
 
 function Base.get(dict::GroupByViewDict{<:Any,<:Any,S}, key, default) where {S}
-    value = unwrap_all(unreduced(dict.state[key]))
-    return value isa S ? default : value
+    val = get(dict.state, key, _NoValue())
+    if val ≡ _NoValue()
+        default
+    else
+        val = unwrap_all(unreduced(something(val)))
+        val isa S ? default : val
+    end
+end
+
+#this is copied from SplittablesBase.halve(::DictLike) which should probably be more generic
+function SplittablesBase.halve(dict::GroupByViewDict{K,V,S}) where {K,V,S}
+    i1 = SplittablesBase.Implementations.firstslot(dict.state)
+    i3 = SplittablesBase.Implementations.lastslot(dict.state)
+    i2 = (i3 - i1 + 1) ÷ 2 + i1
+    left = SplittablesBase.Implementations.DictView(dict, i1, i2 - 1)
+    right = SplittablesBase.Implementations.DictView(dict, i2, i3)
+    (left, right)
 end
 
 function start(rf::R_{GroupBy}, result)
