@@ -64,7 +64,7 @@ julia> inner = Map(last) ⨟ Map() do ξ
            SingletonDict(ξ.b => ξ.c)
        end;
 
-julai> x |> GroupBy(ξ -> ξ.a, inner, merge!!) |> foldxl(right)
+julia> x |> GroupBy(ξ -> ξ.a, inner, merge!!) |> foldxl(right)
 Transducers.GroupByViewDict{String,Dict{Int64, Int64},…}(...):
   "B" => Dict(2=>2)
   "A" => Dict(3=>3, 1=>1)
