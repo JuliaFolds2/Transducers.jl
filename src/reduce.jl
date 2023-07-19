@@ -120,13 +120,6 @@ function transduce_assoc(
     return result
 end
 
-if VERSION >= v"1.3-alpha"
-    maybe_collect(coll) = coll
-else
-    maybe_collect(coll::AbstractArray) = coll
-    maybe_collect(coll) = collect(coll)
-end
-
 function _transduce_assoc_nocomplete(
     rf::F,
     init,
@@ -134,7 +127,7 @@ function _transduce_assoc_nocomplete(
     basesize,
     ctx::DACContext = NoopDACContext(),
 ) where {F}
-    reducible = SizedReducible(maybe_collect(coll), basesize)
+    reducible = SizedReducible(coll, basesize)
     return _reduce(ctx, rf, init, reducible)
 end
 
@@ -224,7 +217,7 @@ _might_return_reduced(rf, init, coll) =
     ) !== Union{}
 
 _reduce_dummy(rf, init, coll) =
-    __reduce_dummy(rf, init, SizedReducible(maybe_collect(coll), 1))
+    __reduce_dummy(rf, init, SizedReducible(coll, 1))
 
 function __reduce_dummy(rf, init, reducible)
     if issmall(reducible)
@@ -378,7 +371,7 @@ tcopy(xf, T::Type{<:AbstractSet}, reducible; kwargs...) =
 function tcopy(
     ::typeof(Map(identity)),
     T::Type{<:AbstractSet},
-    array::PartitionableArray;
+    array::AbstractArray;
     basesize::Integer = max(1, length(array) ÷ Threads.nthreads()),
     kwargs...,
 )

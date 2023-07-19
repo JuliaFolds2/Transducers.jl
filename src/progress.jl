@@ -40,12 +40,7 @@ julia> xf = opcompose(
            end,
        );
 
-julia> if VERSION >= v"1.3-alpha"
-           # Calling `sleep` in thread is safe in Julia 1.3:
-           foldxt(+, xf, withprogress(1:10; interval=1e-3); basesize=1)
-       else
-           foldl(+, xf, withprogress(1:10; interval=1e-3))
-       end
+julia> foldxt(+, xf, withprogress(1:10; interval=1e-3); basesize=1)
 220
 ```
 """
@@ -183,24 +178,8 @@ _reduce(ctx, rf, init, coll::SizedReducible{<:ProgressLoggingFoldable}) =
         _reduce(ctx, rf, init, coll)
     end
 
-if VERSION >= v"1.2"
-    _reduce_threads_for(rf, init, coll::SizedReducible{<:ProgressLoggingFoldable}) =
-        _reduce_progress(_reduce_threads_for, rf, init, coll)
-else
-    # In earlier versions, Channel was not thread-safe (?)
-    # https://github.com/JuliaLang/julia/pull/30186
-    _reduce_threads_for(rf, init, coll::SizedReducible{<:ProgressLoggingFoldable}) =
-        _reduce_threads_for(
-            rf,
-            init,
-            (@set coll.reducible = coll.reducible.foldable),
-        )
-end
-
-if VERSION < v"1.3-alpha"
-    maybe_collect(coll::ProgressLoggingFoldable) =
-        @set coll.foldable = maybe_collect(coll.foldable)
-end
+_reduce_threads_for(rf, init, coll::SizedReducible{<:ProgressLoggingFoldable}) =
+    _reduce_progress(_reduce_threads_for, rf, init, coll)
 
 struct RemoteReduceWithLogging{C} <: Function
     chan::C

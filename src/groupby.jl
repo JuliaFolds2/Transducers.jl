@@ -3,13 +3,26 @@
     GroupBy(key, rf, [init])
 
 Group the input stream by a function `key` and then fan-out each group
-of key-value pairs to the reducing function `rf`.
+of key-value pairs to the eduction `xf'(step)`.  This is similar to the
+`groupby` relational database operation.
 
-For example, if `GroupBy` is used as in:
+For example
+
+    [1,2,1,2,3] |> GroupBy(string, Map(last)'(+)) |> foldxl(right)
+
+returns a result equivalent to `Dict("1"=>2, "2"=>4, "3"=>3)` while
+
+    [1,2,1,2,3] |> GroupBy(string, Map(last) ⨟ Map(Transducers.SingletonVector), append!!) |> foldxl(right)
+
+returns a result equivalent to `Dict("1"=>[1,1], "2"=>[2,2], "3"=>[3,3])`.
+
+Alternatively, one can provide a reducing function directly, though this is disfavored since it prevents
+results from being combined with [`Transducers.combine`](@ref) and therefore cannot be used
+with [`foldxt`](@ref) or [`foldxd`](@ref).  For example, if `GroupBy` is used as in:
 
     xs |> Map(upstream) |> GroupBy(key, rf, init) |> Map(downstream)
 
-then the "function signatures" would be:
+then the function signatures would be:
 
     upstream(_) :: V
     key(::V) :: K
@@ -31,36 +44,30 @@ That is to say,
   the current and all preceding results is then fed into the
   `downstream`.
 
-The signature `GroupBy(key, ::Transducer, [step, [init]])` is preferred since
-results can only be combined with [`Transducers.combine`](@ref) (e.g. for use in `foldxt`)
-when the inner-most reducing function is accessible.  For example, instead of
-```
-GroupBy(key, (y, (k, v)) -> y + v.a, init)
-```
-one should write
-```
-GroupBy(key, Map(kv -> kv[2].a)'(+), init)
-```
-The difference is that in the latter case Transducers can figure out how to sum separately from
-accessing the value.
-
 See also `groupreduce` in
 [SplitApplyCombine.jl](https://github.com/JuliaData/SplitApplyCombine.jl).
 
-!!! compat "Transducers.jl 0.3"
-
-    New in version 0.3.
-
 # Examples
 ```jldoctest
-julia> using Transducers
-       using BangBang  # for `push!!`
+julia> [1,2,3,4] |> GroupBy(iseven, Map(last)'(+)) |> foldxl(right)
+Transducers.GroupByViewDict{Bool,Int64,…}(...):
+  0 => 4
+  1 => 6
+```
 
-julia> foldl(right, GroupBy(string, Map(last), push!!), [1, 2, 1, 2, 3])
-Transducers.GroupByViewDict{String,Vector{Int64},…}(...):
-  "1" => [1, 1]
-  "2" => [2, 2]
-  "3" => [3]
+```jldoctest; setup = :(using Transducers)
+julia> using Transducers: SingletonDict;
+
+julia> x = [(a="A", b=1, c=1), (a="B", b=2, c=2), (a="A", b=3, c=3)];
+
+julia> inner = Map(last) ⨟ Map() do ξ
+           SingletonDict(ξ.b => ξ.c)
+       end;
+
+julai> x |> GroupBy(ξ -> ξ.a, inner, merge!!) |> foldxl(right)
+Transducers.GroupByViewDict{String,Dict{Int64, Int64},…}(...):
+  "B" => Dict(2=>2)
+  "A" => Dict(3=>3, 1=>1)
 ```
 
 Note that the reduction stops if one of the group returns a
@@ -72,7 +79,7 @@ it is find:
 julia> result = transduce(
            GroupBy(
                string,
-               opcompose(Map(last), Scan(+), ReduceIf(x -> x > 3)),
+               Map(last) ⨟ Scan(+) ⨟ ReduceIf(x -> x > 3),
            ),
            right,
            nothing,
