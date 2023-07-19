@@ -48,7 +48,7 @@ See also `groupreduce` in
 [SplitApplyCombine.jl](https://github.com/JuliaData/SplitApplyCombine.jl).
 
 # Examples
-```jldoctest
+```jldoctest; setup = :(using Transducers)
 julia> [1,2,3,4] |> GroupBy(iseven, Map(last)'(+)) |> foldxl(right)
 Transducers.GroupByViewDict{Bool,Int64,…}(...):
   0 => 4
