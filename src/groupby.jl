@@ -58,6 +58,8 @@ Transducers.GroupByViewDict{Bool,Int64,…}(...):
 ```jldoctest; setup = :(using Transducers)
 julia> using Transducers: SingletonDict;
 
+julia> using BangBang; # for merge!!
+
 julia> x = [(a="A", b=1, c=1), (a="B", b=2, c=2), (a="A", b=3, c=3)];
 
 julia> inner = Map(last) ⨟ Map() do ξ
