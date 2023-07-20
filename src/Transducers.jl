@@ -85,7 +85,7 @@ import Setfield
 import Tables
 using ArgCheck
 using BangBang.Experimental: modify!!, mergewith!!
-using BangBang.NoBang: SingletonVector
+using BangBang.NoBang: SingletonVector, SingletonDict
 using BangBang:
     @!, BangBang, Empty, append!!, collector, empty!!, finish!, push!!, setindex!!, union!!
 using Baselet

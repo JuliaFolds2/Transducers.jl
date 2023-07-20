@@ -11,22 +11,10 @@ julia> _unzip(((1, 2, 3), (4, 5, 6)))
 """
 _unzip(xs::Tuple{Vararg{NTuple{N,Any}}}) where {N} = ntuple(i -> map(x -> x[i], xs), N)
 
-if isdefined(Iterators, :Zip1)  # VERSION < v"1.1-"
-    arguments(xs::Iterators.Zip1) = (xs.a,)
-    arguments(xs::Iterators.Zip2) = (xs.a, xs.b)
-    arguments(xs::Iterators.Zip) = (xs.a, arguments(xs.z)...)
-    const _Zip = Iterators.AbstractZipIterator
-else
-    arguments(xs::Iterators.Zip) = xs.is
-    const _Zip = Iterators.Zip
-end
+arguments(xs::Iterators.Zip) = xs.is
+const _Zip = Iterators.Zip
 
-if VERSION < v"1.3"
-    _Channel(f, ::Type{T}, size; kwargs...) where {T} =
-        Channel(f; ctype = T, csize = size, kwargs...)
-else
-    _Channel(f, ::Type{T}, size; kwargs...) where {T} = Channel{T}(f, size; kwargs...)
-end
+_Channel(f, ::Type{T}, size; kwargs...) where {T} = Channel{T}(f, size; kwargs...)
 
 _typeof(::Type{T}) where {T} = Type{T}
 _typeof(::T) where {T} = T
@@ -55,13 +43,6 @@ prefixed_type_name(@nospecialize x) =
 
 const DenseSubVector{T} =
     SubArray{T, 1, Vector{T}, Tuple{UnitRange{Int}}, true}
-
-# https://github.com/JuliaLang/julia/pull/33533
-if VERSION < v"1.4"
-    const PartitionableArray = Vector
-else
-    const PartitionableArray = AbstractArray
-end
 
 
 const _non_executable_transducer_msg = """

@@ -38,12 +38,6 @@ function _unsafe_sync_end(tasks)
     end
 end
 
-if VERSION < v"1.5-"
-    const sync_end = Base.sync_end
-else
-    const sync_end = _unsafe_sync_end
-end
-
 function transduce_commutative!(
     xform::Transducer,
     step,
@@ -85,7 +79,7 @@ function transduce_commutative!(
             rethrow()
         end
     end
-    sync_end(tasks)
+    _unsafe_sync_end(tasks)
     return foldl(combine_step(rf), Map(fetch), tasks)
 end
 

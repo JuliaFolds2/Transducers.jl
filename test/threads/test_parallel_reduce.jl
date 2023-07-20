@@ -110,16 +110,16 @@ end
 
 @testset "tcopy(Set, ...)" begin
     @testset for xs in [[1], [1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1, 1]]
-        @test tcopy(Set, xs::Transducers.PartitionableArray) == Set([1])
+        @test tcopy(Set, xs::AbstractArray) == Set([1])
         @testset for basesize in 1:3
-            @test tcopy(Set, xs::Transducers.PartitionableArray, basesize = basesize) ==
+            @test tcopy(Set, xs::AbstractArray, basesize = basesize) ==
                 Set([1])
         end
     end
     @testset "empty" begin
-        @test tcopy(Set, Int[]::Transducers.PartitionableArray) === Empty(Set)
+        @test tcopy(Set, Int[]) === Empty(Set)
         @testset for basesize in 1:3
-            @test tcopy(Set, Int[]::Transducers.PartitionableArray, basesize = basesize) ==
+            @test tcopy(Set, Int[], basesize = basesize) ==
                 Empty(Set)
         end
     end

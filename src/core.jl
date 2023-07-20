@@ -251,9 +251,7 @@ AbstractFilter
 
 abstract type AbstractReduction{innertype} <: Function end
 
-if VERSION >= v"1.3"  # post https://github.com/JuliaLang/julia/pull/31916
-    @inline (rf::AbstractReduction)(state, input) = next(rf, state, input)
-end
+@inline (rf::AbstractReduction)(state, input) = next(rf, state, input)
 
 InnerType(::Type{<:AbstractReduction{T}}) where T = T
 
@@ -320,10 +318,6 @@ struct Reduction{X <: Transducer, I} <: AbstractReduction{I}
 end
 
 Base.:(==)(r1::Reduction, r2::Reduction) = (r1.xform == r2.xform) && (r1.inner == r2.inner)
-
-if VERSION < v"1.3"  # pre https://github.com/JuliaLang/julia/pull/31916
-    @inline (rf::Reduction)(state, input) = next(rf, state, input)
-end
 
 prependxf(rf::AbstractReduction, xf) = Reduction(xf, rf)
 setinner(rf::Reduction, inner) = Reduction(xform(rf), inner)
@@ -393,11 +387,7 @@ Composition of transducers.
 @inline Base.:∘(f::IdentityTransducer, ::IdentityTransducer) = f
 @inline Base.:∘(::IdentityTransducer, f::Composition) = f  # disambiguation
 
-if VERSION >= v"1.3"
-    (xf::Transducer)(itr) = eduction(xf, itr)
-else
-    Base.:|>(itr, xf::Transducer) = eduction(xf, itr)
-end
+(xf::Transducer)(itr) = eduction(xf, itr)
 
 """
     ReducingFunctionTransform(xf)
