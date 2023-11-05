@@ -36,8 +36,14 @@ const __width_ir_fmul = __is32bit ? 2 : 4
         # compiler becomes _extremely_ smart).
         ir = llvm_ir(map!, (xf, ys, xs))
         @debug "map!/history" LLVM_IR=Text(ir)
-        @test_broken nmatches(r"fmul <[0-9]+ x double>", ir) >= __width_ir_fmul
-        @test_broken nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= __width_ir_fmul
+        if VERSION < v"1.11.0-"
+            @test_broken nmatches(r"fmul <[0-9]+ x double>", ir) >= __width_ir_fmul
+            @test_broken nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= __width_ir_fmul
+        else
+            # Compiler is now "_extremely_ smart"
+            @test nmatches(r"fmul <[0-9]+ x double>", ir) >= __width_ir_fmul
+            @test nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= __width_ir_fmul
+        end
     end
 
     @testset for simd in [false, true, :ivdep]

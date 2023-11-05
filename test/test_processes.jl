@@ -172,7 +172,12 @@ end
     @testset "inference" begin
         @test (@inferred setinput(ed, [0])).coll isa Vector{Int}
         @test (@inferred setinput(ed, view([0], 1:1))).coll isa SubArray{Int}
-        @test_broken (@inferred setinput(ed, Float64[])).coll isa Vector{Float64}
+        if VERSION < v"1.11.0-"
+            # Looks like inference improved
+            @test_broken (@inferred setinput(ed, Float64[])).coll isa Vector{Float64}
+        else
+            @test (@inferred setinput(ed, Float64[])).coll isa Vector{Float64}
+        end
     end
 end
 
