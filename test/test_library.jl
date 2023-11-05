@@ -6,6 +6,23 @@ using Transducers: isexpansive, AdHocXF
 using Transducers: AdHocXF, @next
 using Setfield: @set!
 
+
+struct VecOfVec{T}
+    vectors::Vector{Vector{T}}
+end
+function Transducers.__foldl__(rf, val, vov::VecOfVec)
+    for vector in vov.vectors
+        for x in vector
+            val = Transducers.@next(rf, val, x)
+        end
+    end
+    return Transducers.complete(rf, val)
+end
+struct VecOfVec2{T}
+    vectors::Vector{T}
+end
+Transducers.asfoldable(vov::VecOfVec2) = vov.vectors |> Cat()
+
 @testset "Cat" begin
     # Inner transducer is stateful:
     @testset for xs in iterator_variants([1:5, 1:2])
@@ -18,6 +35,11 @@ using Setfield: @set!
         xf = opcompose(PartitionBy(isequal(3)), Map(copy))
         @test xs |> Cat() |> xf |> collect == collect(xf, vcat(xs...))
     end
+    
+    vov  = VecOfVec( [collect(1:n) for n in 1:3])
+    vov2 = VecOfVec2([collect(1:n) for n in 1:3])
+    # ref https://github.com/JuliaFolds2/Transducers.jl/issues/23
+    @test sum((vov, vov) |> Cat()) == sum((vov2, vov2) |> Cat())
 end
 
 @testset "MapCat" begin

@@ -153,7 +153,7 @@ struct Cat <: Transducer
 end
 
 @inline function next(rf::R_{Cat}, acc, x)
-    rf0, itr0 = retransform(inner(rf), x)
+    rf0, itr0 = retransform(inner(rf), asfoldable(x))
     return foldl_nocomplete(rf0, acc, itr0)
 end
 
