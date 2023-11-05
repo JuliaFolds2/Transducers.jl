@@ -40,6 +40,7 @@ const __width_ir_fmul = __is32bit ? 2 : 4
             @test_broken nmatches(r"fmul <[0-9]+ x double>", ir) >= __width_ir_fmul
             @test_broken nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= __width_ir_fmul
         else
+            # Compiler is now "_extremely_ smart"
             @test nmatches(r"fmul <[0-9]+ x double>", ir) >= __width_ir_fmul
             @test nmatches(r"fcmp [a-z]* <[0-9]+ x double>", ir) >= __width_ir_fmul
         end

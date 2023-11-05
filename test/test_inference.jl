@@ -59,6 +59,7 @@ end
             @test_broken_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs; init=1)
             @test_broken_inferred foldl(*, opcompose(Scan(+), Map(x -> x::Int), Scan(+)), xs)
         else
+            # Looks like inference has improved here
             @test_inferred foldl(right, opcompose(Scan(+), Scan(+)), xs)
             @test_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs)
             @test_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs; init=1)
