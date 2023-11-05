@@ -53,10 +53,17 @@ end
         # Nested stateful transducers.  (The ones with `right` and
         # `Map(x -> x::Int)` actually succeeded in some REPL
         # sessions...  Maybe some caching problem?)
-        @test_broken_inferred foldl(right, opcompose(Scan(+), Scan(+)), xs)
-        @test_broken_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs)
-        @test_broken_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs; init=1)
-        @test_broken_inferred foldl(*, opcompose(Scan(+), Map(x -> x::Int), Scan(+)), xs)
+        if VERSION < v"1.11.0-"
+            @test_broken_inferred foldl(right, opcompose(Scan(+), Scan(+)), xs)
+            @test_broken_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs)
+            @test_broken_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs; init=1)
+            @test_broken_inferred foldl(*, opcompose(Scan(+), Map(x -> x::Int), Scan(+)), xs)
+        else
+            @test_inferred foldl(right, opcompose(Scan(+), Scan(+)), xs)
+            @test_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs)
+            @test_inferred foldl(*, opcompose(Scan(+), Scan(+)), xs; init=1)
+            @test_inferred foldl(*, opcompose(Scan(+), Map(x -> x::Int), Scan(+)), xs)
+        end
     end
     @test_inferred foldl(+, Cat(), [[1]])
 
