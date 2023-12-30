@@ -36,7 +36,7 @@ TransducersOnlineStatsBaseExt = "OnlineStatsBase"
 TransducersReferenceablesExt = "Referenceables"
 
 [compat]
-Adapt = "1, 2, 3"
+Adapt = "1, 2, 3, 4"
 ArgCheck = "1, 2.0"
 BangBang = "0.3.28"
 Baselet = "0.1"
