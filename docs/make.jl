@@ -145,7 +145,6 @@ transducers_rm_duplicated_docs()
 transducers_literate()
 
 examples = EXAMPLE_PAGES
-strict = get(ENV, "CI", "false") == "true"
 doctest = get(ENV, "CI", "false") == "true"
 doctest = true
 
@@ -172,7 +171,6 @@ makedocs(;
     #repo = "https://github.com/JuliaFolds2/Transducers.jl/blob/{commit}{path}#L{line}",
     sitename = "Transducers.jl",
     authors = "Takafumi Arakaki",
-    strict = strict,
     doctest = doctest,
 )
 
