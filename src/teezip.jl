@@ -195,12 +195,12 @@ julia> collect(Zip(Map(identity), Map(x -> 10x), Map(x -> 100x)), 1:3)
  (3, 30, 300)
 ```
 """
-Zip(xforms...) = Map(last) ∘ _Zip(xforms...) ∘ Map(_zip_init)
+Zip(xforms...) = Map(last) ∘ __Zip(xforms...) ∘ Map(_zip_init)
 # TODO: add `lower(xf)` mechanism so that constructing Zip does not
 # immediately create a complex composite transducer.
 
-_Zip() = IdentityTransducer()
-_Zip(xf1, xforms...) = _Zip(xforms...) ∘ Map(_zip_between) ∘ ZipSource(xf1 ∘ Map(first))
+__Zip() = IdentityTransducer()
+__Zip(xf1, xforms...) = __Zip(xforms...) ∘ Map(_zip_between) ∘ ZipSource(xf1 ∘ Map(first))
 
 _zip_init(y0) = (y0, ())
 _zip_between(((y0, ys), yn)) = (y0, (ys..., yn))
