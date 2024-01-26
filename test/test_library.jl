@@ -4,7 +4,7 @@ using Dates
 using BangBang: push!!
 using Transducers: isexpansive, AdHocXF
 using Transducers: AdHocXF, @next
-using Setfield: @set!
+using Accessors: @reset
 
 
 struct VecOfVec{T}
@@ -584,7 +584,7 @@ end
             return result
         else
             chunk = result.state
-            @set! result.state = (name=strip(m.captures[1]), lines=String[])
+            @reset result.state = (name=strip(m.captures[1]), lines=String[])
             push!(result.state.lines, input)
             if chunk === nothing
                 return result

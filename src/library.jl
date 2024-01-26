@@ -1327,7 +1327,7 @@ end
 ```jldoctest
 julia> using Transducers
        using Transducers: AdHocXF, @next
-       using Setfield: @set!
+       using Accessors: @set!
 
 julia> flushlast(rf, result) = rf(@next(rf, result, result.state));
 

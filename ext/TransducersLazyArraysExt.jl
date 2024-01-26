@@ -2,11 +2,11 @@ module TransducersLazyArraysExt
 
 if isdefined(Base, :get_extension)
     using Transducers: Transducers, @return_if_reduced, @next, @simd_if, complete, foldlargs, foldl_nocomplete
-    using Transducers.Setfield: @set
+    using Transducers.Accessors: @set
     using LazyArrays
 else
     using ..Transducers: Transducers, @return_if_reduced, @next, @simd_if, complete, foldlargs, foldl_nocomplete
-    using ..Transducers.Setfield: @set
+    using ..Transducers.Accessors: @set
     using ..LazyArrays
 end
 
