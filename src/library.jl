@@ -1327,7 +1327,7 @@ end
 ```jldoctest
 julia> using Transducers
        using Transducers: AdHocXF, @next
-       using Accessors: @set!
+       using Accessors: @reset
 
 julia> flushlast(rf, result) = rf(@next(rf, result, result.state));
 
@@ -1338,7 +1338,7 @@ julia> xf = AdHocXF(nothing, flushlast) do rf, result, input
                return result
            else
                chunk = result.state
-               @set! result.state = (name=strip(m.captures[1]), lines=String[])
+               @reset result.state = (name=strip(m.captures[1]), lines=String[])
                push!(result.state.lines, input)
                if chunk === nothing
                    return result
