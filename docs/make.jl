@@ -26,13 +26,13 @@ using Documenter
 using Transducers
 
 EXAMPLE_PAGES = [
-    "Tutorial: Missing values" => "tutorials/tutorial_missings.md",
-    "Tutorial: Parallelism" => "tutorials/tutorial_parallel.md",
-    "Parallel word count" => "tutorials/words.md",
-    "Empty result handling" => "howto/empty_result_handling.md",
-    "Writing transducers" => "howto/transducers.md",
-    "Writing reducibles" => "howto/reducibles.md",
-    "Useful patterns" => "howto/useful_patterns.md",
+    "Tutorial: Missing values" => "../examples/tutorial_missings.md",
+    "Tutorial: Parallelism" => "../examples/tutorial_parallel.md",
+    "Parallel word count" => "../examples/words.md",
+    "Empty result handling" => "../examples/empty_result_handling.md",
+    "Writing transducers" => "../examples/transducers.md",
+    "Writing reducibles" => "../examples/reducibles.md",
+    "Useful patterns" => "../examples/useful_patterns.md",
 ]
 
 LoadAllPackages.loadall(joinpath((@__DIR__), "Project.toml"))
