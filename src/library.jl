@@ -1360,7 +1360,7 @@ julia> collect(xf, split(\"\"\"
        name: Cat |> Filter
        type: chaotic
        \"\"\", "\\n"; keepempty=false))
-4-element Vector{NamedTuple{(:name, :lines), Tuple{SubString{String}, Vector{String}}}}:
+4-element Vector{@NamedTuple{name::SubString{String}, lines::Vector{String}}}:
  (name = "Map", lines = ["name: Map", "type: onetoone"])
  (name = "Cat", lines = ["name: Cat", "type: expansive"])
  (name = "Filter", lines = ["name: Filter", "type: contractive"])
