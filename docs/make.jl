@@ -151,7 +151,7 @@ doctest = true
 tutorials = filter(((_, path),) -> startswith(path, "tutorials/"), examples)
 howto = filter(((_, path),) -> startswith(path, "howto/"), examples)
 @assert issetequal(union(tutorials, howto), examples)
-@info "`makedocs` with" strict doctest
+@info "`makedocs` with" doctest
 makedocs(;
     modules = [Transducers],
     pages = [

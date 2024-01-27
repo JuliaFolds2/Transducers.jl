@@ -1326,8 +1326,10 @@ end
 # Examples
 ```jldoctest
 julia> using Transducers
-       using Transducers: AdHocXF, @next
-       using Accessors: @reset
+
+julia> using Transducers: AdHocXF, @next
+
+julia> using Accessors: @reset
 
 julia> flushlast(rf, result) = rf(@next(rf, result, result.state));
 
