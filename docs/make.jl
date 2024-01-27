@@ -153,12 +153,12 @@ howto = filter(((_, path),) -> startswith(path, "howto/"), examples)
 @assert issetequal(union(tutorials, howto), examples)
 
 tutorial_paths = map(tutorials) do (_, outpath)
-    inputbase = joinpath(@__DIR__, "..", "examples")
+    inputbase = joinpath(@__DIR__, "..", "..", "examples")
     name, = splitext(basename(outpath))
     joinpath(inputbase, "$name.jl")
 end
 howto_paths = map(howto) do (_, outpath)
-    inputbase = joinpath(@__DIR__, "..", "examples")
+    inputbase = joinpath(@__DIR__, "..", "..", "examples")
     name, = splitext(basename(outpath))
     joinpath(inputbase, "$name.jl")
 end
