@@ -26,13 +26,13 @@ using Documenter
 using Transducers
 
 EXAMPLE_PAGES = [
-    "Tutorial: Missing values" => "../examples/tutorial_missings.md",
-    "Tutorial: Parallelism" => "../examples/tutorial_parallel.md",
-    "Parallel word count" => "../examples/words.md",
-    "Empty result handling" => "../examples/empty_result_handling.md",
-    "Writing transducers" => "../examples/transducers.md",
-    "Writing reducibles" => "../examples/reducibles.md",
-    "Useful patterns" => "../examples/useful_patterns.md",
+    "Tutorial: Missing values" => "tutorials/tutorial_missings.md",
+    "Tutorial: Parallelism" => "tutorials/tutorial_parallel.md",
+    "Parallel word count" => "tutorials/words.md",
+    "Empty result handling" => "howto/empty_result_handling.md",
+    "Writing transducers" => "howto/transducers.md",
+    "Writing reducibles" => "howto/reducibles.md",
+    "Useful patterns" => "howto/useful_patterns.md",
 ]
 
 LoadAllPackages.loadall(joinpath((@__DIR__), "Project.toml"))
@@ -151,6 +151,18 @@ doctest = true
 tutorials = filter(((_, path),) -> startswith(path, "tutorials/"), examples)
 howto = filter(((_, path),) -> startswith(path, "howto/"), examples)
 @assert issetequal(union(tutorials, howto), examples)
+
+tutorial_paths = map(tutorials) do outpath
+    inputbase = joinpath(@__DIR__, "..", "examples")
+    name, = splitext(basename(outpath))
+    joinpath(inputbase, "$name.jl")
+end
+howto_paths = map(howto) do outpath
+    inputbase = joinpath(@__DIR__, "..", "examples")
+    name, = splitext(basename(outpath))
+    joinpath(inputbase, "$name.jl")
+end
+
 @info "`makedocs` with" doctest
 makedocs(;
     modules = [Transducers],
@@ -158,8 +170,8 @@ makedocs(;
         "Home" => "index.md",
         "Reference" =>
             ["Manual" => "reference/manual.md", "Interface" => "reference/interface.md"],
-        "Tutorials" => tutorials,
-        "How-to guides" => howto,
+        "Tutorials" => tutorial_paths,
+        "How-to guides" => howto_paths,
         "Explanation" => [
             "Parallelism" => "parallelism.md",  # TODO: merge this to index.md
             "Comparison to iterators" => "explanation/comparison_to_iterators.md",
