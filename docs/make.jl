@@ -150,18 +150,18 @@ doctest = true
 
 tutorials = filter(((_, path),) -> startswith(path, "tutorials/"), examples)
 howto = filter(((_, path),) -> startswith(path, "howto/"), examples)
-@assert issetequal(union(tutorials, howto), examples)
+# @assert issetequal(union(tutorials, howto), examples)
 
-tutorial_paths = map(tutorials) do (_, outpath)
-    inputbase = joinpath(@__DIR__, "..", "..", "examples")
-    name, = splitext(basename(outpath))
-    joinpath(inputbase, "$name.jl")
-end
-howto_paths = map(howto) do (_, outpath)
-    inputbase = joinpath(@__DIR__, "..", "..", "examples")
-    name, = splitext(basename(outpath))
-    joinpath(inputbase, "$name.jl")
-end
+# tutorial_paths = map(tutorials) do (_, outpath)
+#     inputbase = joinpath(@__DIR__, "..", "examples")
+#     name, = splitext(basename(outpath))
+#     joinpath(inputbase, "$name.md")
+# end
+# howto_paths = map(howto) do (_, outpath)
+#     inputbase = joinpath(@__DIR__, "..", "examples")
+#     name, = splitext(basename(outpath))
+#     joinpath(inputbase, "$name.md")
+# end
 
 @info "`makedocs` with" doctest
 makedocs(;
@@ -170,8 +170,8 @@ makedocs(;
         "Home" => "index.md",
         "Reference" =>
             ["Manual" => "reference/manual.md", "Interface" => "reference/interface.md"],
-        "Tutorials" => tutorial_paths,
-        "How-to guides" => howto_paths,
+        "Tutorials" => tutorials,
+        "How-to guides" => howto,
         "Explanation" => [
             "Parallelism" => "parallelism.md",  # TODO: merge this to index.md
             "Comparison to iterators" => "explanation/comparison_to_iterators.md",
@@ -186,8 +186,8 @@ makedocs(;
     doctest = doctest,
 )
 
-transducers_make_redirections()
-deploydocs(;
-    repo = "github.com/JuliaFolds2/Transducers.jl",
-    push_preview = should_push_preview(),
-)
+# transducers_make_redirections()
+# deploydocs(;
+#     repo = "github.com/JuliaFolds2/Transducers.jl",
+#     push_preview = should_push_preview(),
+# )

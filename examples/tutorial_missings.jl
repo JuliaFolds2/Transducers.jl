@@ -234,7 +234,7 @@ end == (2 => 3)
     [1, 3, missing, 0] |> pairs |> Filter(!(ismissing ∘ last)) |> foldxl(findmax_step)
 end == (2 => 3)
 
-# [`foldxl`](@ref) is like [`foldl`](@refe) but always uses
+# [`foldxl`](@ref) is like [`foldl`](@ref) but always uses
 # Transducers.jl's extended fold protocol.  It also has the unary
 # curried method `foldxl(rf)` defined as `xs -> foldxl(rf, xs)`.  It
 # is handy to use in the piping context as in the latter example.
