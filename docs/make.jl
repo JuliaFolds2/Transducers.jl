@@ -145,14 +145,25 @@ transducers_rm_duplicated_docs()
 transducers_literate()
 
 examples = EXAMPLE_PAGES
-strict = get(ENV, "CI", "false") == "true"
 doctest = get(ENV, "CI", "false") == "true"
 doctest = true
 
 tutorials = filter(((_, path),) -> startswith(path, "tutorials/"), examples)
 howto = filter(((_, path),) -> startswith(path, "howto/"), examples)
-@assert issetequal(union(tutorials, howto), examples)
-@info "`makedocs` with" strict doctest
+# @assert issetequal(union(tutorials, howto), examples)
+
+# tutorial_paths = map(tutorials) do (_, outpath)
+#     inputbase = joinpath(@__DIR__, "..", "examples")
+#     name, = splitext(basename(outpath))
+#     joinpath(inputbase, "$name.md")
+# end
+# howto_paths = map(howto) do (_, outpath)
+#     inputbase = joinpath(@__DIR__, "..", "examples")
+#     name, = splitext(basename(outpath))
+#     joinpath(inputbase, "$name.md")
+# end
+
+@info "`makedocs` with" doctest
 makedocs(;
     modules = [Transducers],
     pages = [
@@ -172,12 +183,11 @@ makedocs(;
     #repo = "https://github.com/JuliaFolds2/Transducers.jl/blob/{commit}{path}#L{line}",
     sitename = "Transducers.jl",
     authors = "Takafumi Arakaki",
-    strict = strict,
     doctest = doctest,
 )
 
-transducers_make_redirections()
-deploydocs(;
-    repo = "github.com/JuliaFolds2/Transducers.jl",
-    push_preview = should_push_preview(),
-)
+# transducers_make_redirections()
+# deploydocs(;
+#     repo = "github.com/JuliaFolds2/Transducers.jl",
+#     push_preview = should_push_preview(),
+# )

@@ -1326,8 +1326,10 @@ end
 # Examples
 ```jldoctest
 julia> using Transducers
-       using Transducers: AdHocXF, @next
-       using Setfield: @set!
+
+julia> using Transducers: AdHocXF, @next
+
+julia> using Accessors: @reset
 
 julia> flushlast(rf, result) = rf(@next(rf, result, result.state));
 
@@ -1338,7 +1340,7 @@ julia> xf = AdHocXF(nothing, flushlast) do rf, result, input
                return result
            else
                chunk = result.state
-               @set! result.state = (name=strip(m.captures[1]), lines=String[])
+               @reset result.state = (name=strip(m.captures[1]), lines=String[])
                push!(result.state.lines, input)
                if chunk === nothing
                    return result
@@ -1358,7 +1360,7 @@ julia> collect(xf, split(\"\"\"
        name: Cat |> Filter
        type: chaotic
        \"\"\", "\\n"; keepempty=false))
-4-element Vector{NamedTuple{(:name, :lines), Tuple{SubString{String}, Vector{String}}}}:
+4-element Vector{@NamedTuple{name::SubString{String}, lines::Vector{String}}}:
  (name = "Map", lines = ["name: Map", "type: onetoone"])
  (name = "Cat", lines = ["name: Cat", "type: expansive"])
  (name = "Filter", lines = ["name: Filter", "type: contractive"])

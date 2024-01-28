@@ -81,7 +81,7 @@ using Base.Broadcast: Broadcasted
 using Base: tail
 
 import Adapt
-import Setfield
+import Accessors
 import Tables
 using ArgCheck
 using BangBang.Experimental: modify!!, mergewith!!
@@ -102,7 +102,7 @@ using InitialValues:
 using Logging: @logmsg, LogLevel
 using MicroCollections: UndefVector, UndefArray
 using Requires
-using Setfield: @lens, @set, set, setproperties
+using Accessors: @optic, @set, set, setproperties
 using SplittablesBase: SplittablesBase, amount, halve
 import ConstructionBase
 

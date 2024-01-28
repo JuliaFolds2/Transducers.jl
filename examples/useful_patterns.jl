@@ -351,7 +351,7 @@ end == [1, 3, 1, 3]
 # [`oncol`](https://juliafolds.github.io/DataTools.jl/dev/#DataTools.oncol)
 # from [DataTools.jl](https://github.com/JuliaFolds/DataTools.jl) is
 # like `ProductRF` but acts on `NamedTuple` (as well as any
-# [Setfield.jl](https://github.com/jw3126/Setfield.jl)-compatible
+# [Accessors.jl](https://github.com/JuliaObjects/Accessors.jl)-compatible
 # possibly nested objects).
 
 using DataTools
