@@ -186,8 +186,8 @@ makedocs(;
     doctest = doctest,
 )
 
-# transducers_make_redirections()
-# deploydocs(;
-#     repo = "github.com/JuliaFolds2/Transducers.jl",
-#     push_preview = should_push_preview(),
-# )
+transducers_make_redirections()
+deploydocs(;
+    repo = "github.com/JuliaFolds2/Transducers.jl",
+    push_preview = should_push_preview(),
+)
