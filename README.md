@@ -46,12 +46,12 @@ Following packages are supported by Transducers.jl.  In particular, they rely on
 the Transducers.jl protocol to support multi-threading, multi-processing, and
 GPU-based parallelism.
 
-* [Folds.jl](https://github.com/JuliaFolds/Folds.jl) implements parallelized
+* [Folds.jl](https://github.com/JuliaFolds2/Folds.jl) implements parallelized
   `Base`-like API based on Transducers.jl.  This package can be used without
   knowing anything about transducers.
 * [FLoops.jl](https://github.com/JuliaFolds/FLoops.jl) provides `for`-loop
   syntax for using the loop executed by the Transducers.jl protocol.
-* [BangBang.jl](https://github.com/JuliaFolds/BangBang.jl) implements
+* [BangBang.jl](https://github.com/JuliaFolds2/BangBang.jl) implements
   mutate-or-widen API.  This is the foundation of
   [typocalypse](https://discourse.julialang.org/search?q=typocalypse)-free
   `map`/`collect`-like functions.  Functions such as `append!!`,
@@ -59,7 +59,7 @@ GPU-based parallelism.
   function.
 * [InitialValues.jl](https://github.com/JuliaFolds/InitialValues.jl)
   provides a framework for initial/identity element of folds.
-* [MicroCollections.jl](https://github.com/JuliaFolds/MicroCollections.jl)
+* [MicroCollections.jl](https://github.com/JuliaFolds2/MicroCollections.jl)
   provides empty and singleton collections (arrays, dicts and sets).
   They are useful when writing transducers and reducing functions that
   construct a data collection.
