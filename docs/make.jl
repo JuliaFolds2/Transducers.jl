@@ -24,7 +24,7 @@ import OnlineStats
 import Random
 using Documenter
 using Transducers
-import CompositionsBase: ⨟
+using CompositionsBase: CompositionsBase, ⨟
 
 EXAMPLE_PAGES = [
     "Tutorial: Missing values" => "tutorials/tutorial_missings.md",
