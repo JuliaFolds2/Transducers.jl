@@ -40,6 +40,7 @@ Transducers.append_unordered!
 
 ```@docs
 Transducers.Transducer
+CompositionsBase.:⨟
 Base.:∘
 Base.adjoint
 ```

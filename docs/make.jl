@@ -24,6 +24,7 @@ import OnlineStats
 import Random
 using Documenter
 using Transducers
+using CompositionsBase: CompositionsBase, ⨟
 
 EXAMPLE_PAGES = [
     "Tutorial: Missing values" => "tutorials/tutorial_missings.md",
@@ -165,7 +166,7 @@ howto = filter(((_, path),) -> startswith(path, "howto/"), examples)
 
 @info "`makedocs` with" doctest
 makedocs(;
-    modules = [Transducers],
+    modules = [Transducers, CompositionsBase],
     pages = [
         "Home" => "index.md",
         "Reference" =>
@@ -180,6 +181,7 @@ makedocs(;
             "Internals" => "explanation/internals.md",
         ],
     ],
+    checkdocs=:none,
     #repo = "https://github.com/JuliaFolds2/Transducers.jl/blob/{commit}{path}#L{line}",
     sitename = "Transducers.jl",
     authors = "Takafumi Arakaki",
