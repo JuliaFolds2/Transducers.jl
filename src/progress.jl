@@ -60,6 +60,7 @@ end
 Base.IteratorSize(::Type{ProgressLoggingFoldable{T}}) where {T} = Base.IteratorSize(T)
 Base.IteratorEltype(::Type{ProgressLoggingFoldable{T}}) where {T} = Base.IteratorEltype(T)
 Base.length(foldable::ProgressLoggingFoldable) = length(foldable.foldable)
+Base.size(foldable::ProgressLoggingFoldable) = size(foldable.foldable)
 Base.eltype(::Type{ProgressLoggingFoldable{T}}) where {T} = eltype(T)
 
 # Use Juno/Atom-compatible log-level.  See:
