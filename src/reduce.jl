@@ -353,6 +353,10 @@ function split_into_chunks(coll, sz)
     collect(Iterators.partition(coll, sz))
 end
 
+function split_into_chunks(coll::Transducers.ProgressLoggingFoldable, sz)
+    withprogress(collect(Iterators.partition(coll.foldable, sz)); interval=coll.interval)
+end
+
 tcopy(xf, reducible; kwargs...) = tcopy(xf, _materializer(reducible), reducible; kwargs...)
 
 function tcopy(::Type{T}, itr; kwargs...) where {T}

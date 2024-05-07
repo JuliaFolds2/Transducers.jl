@@ -138,7 +138,6 @@ include("simd.jl")
 include("executors.jl")
 include("processes.jl")
 include("threading_utils.jl")
-include("reduce.jl")
 include("nondeterministic_threading.jl")
 include("dreduce.jl")
 include("unordered.jl")
@@ -147,6 +146,7 @@ include("lister.jl")
 include("show.jl")
 include("comprehensions.jl")
 include("progress.jl")
+include("reduce.jl")
 
 #used by TransducersOnlineStatsBaseExt, but exported directly in tests
 const OSNonZeroNObsError = ArgumentError(
