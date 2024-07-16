@@ -156,6 +156,8 @@ const OSNonZeroNObsError = ArgumentError(
 
 if !isdefined(Base,:get_extension)
     using Requires
+    using Adapt
+    include("../ext/TransducersAdaptExt.jl")
     function __init__()
         @require BlockArrays="8e7c35d0-a365-5155-bbbb-fb81a777f24e" include("../ext/TransducersBlockArraysExt.jl")
         @require LazyArrays="5078a376-72f3-5289-bfd5-ec5146d43c02" include("../ext/TransducersLazyArraysExt.jl")
