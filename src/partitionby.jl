@@ -47,11 +47,6 @@ struct ReducePartitionBy{F,RF,Init} <: Transducer
 end
 ReducePartitionBy(f, rf) = ReducePartitionBy(f, rf, Init)
 
-Adapt.adapt_structure(to, xf::ReducePartitionBy) = ReducePartitionBy(
-    Adapt.adapt(to, xf.f),
-    Adapt.adapt(to, xf.rf),
-    Adapt.adapt(to, xf.init),
-)
 
 struct PartitionChunk{K,V}
     kr::K
