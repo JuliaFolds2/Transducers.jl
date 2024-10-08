@@ -1,7 +1,7 @@
 name = "Transducers"
 uuid = "28d57a85-8fef-5791-bfe6-a80928e7c999"
 authors = ["Takafumi Arakaki <aka.tkf@gmail.com>"]
-version = "0.4.82"
+version = "0.4.83"
 
 [deps]
 Accessors = "7d9f7c33-5ae7-4f3b-8dc6-eff91059b697"
