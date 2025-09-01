@@ -100,7 +100,6 @@ using InitialValues:
     hasinitialvalue
 using Logging: @logmsg, LogLevel
 using MicroCollections: UndefVector, UndefArray
-using Requires
 using Accessors: @optic, @set, set, setproperties
 using SplittablesBase: SplittablesBase, amount, halve
 import ConstructionBase
