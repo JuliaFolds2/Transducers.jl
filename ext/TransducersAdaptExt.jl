@@ -1,12 +1,7 @@
 module TransducersAdaptExt
 
-if isdefined(Base,:get_extension)
-    import Transducers
-    import Adapt
-else
-    import ..Transducers
-    import ..Adapt
-end
+import Transducers
+import Adapt
 
 Adapt.adapt_structure(to, rf::R) where {R <: Transducers.Reduction} =
     Transducers.Reduction(Adapt.adapt(to, Transducers.xform(rf)), Adapt.adapt(to, Transducers.inner(rf)))

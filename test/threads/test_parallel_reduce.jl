@@ -25,15 +25,13 @@ end
     records = recorder.records
     @test foldxt(right, 1:32 |> Map(recorder) |> ReduceIf(==(1));
                  basesize=1) === 1
-    if VERSION >= v"1.3-alpha"
-        if Threads.nthreads() == 1
-            @test length(records) == 1
-        else
-            # Not sure if this safe, but let's check if _some_
-            # tasks are canceled.
-            @test length(records) < sum(2 .^ (0:5))
-            # (though it seems `length(records)` is always 1?)
-        end
+    if Threads.nthreads() == 1
+        @test length(records) == 1
+    else
+        # Not sure if this safe, but let's check if _some_
+        # tasks are canceled.
+        @test length(records) < sum(2 .^ (0:5))
+        # (though it seems `length(records)` is always 1?)
     end
 end
 

@@ -1,14 +1,8 @@
 module TransducersLazyArraysExt
 
-if isdefined(Base, :get_extension)
-    using Transducers: Transducers, @return_if_reduced, @next, @simd_if, complete, foldlargs, foldl_nocomplete
-    using Transducers.Accessors: @set
-    using LazyArrays
-else
-    using ..Transducers: Transducers, @return_if_reduced, @next, @simd_if, complete, foldlargs, foldl_nocomplete
-    using ..Transducers.Accessors: @set
-    using ..LazyArrays
-end
+using Transducers: Transducers, @return_if_reduced, @next, @simd_if, complete, foldlargs, foldl_nocomplete
+using Transducers.Accessors: @set
+using LazyArrays
 
 @inline function _foldl_lazy_cat_vectors(rf, acc, vectors)
     isempty(vectors) && return complete(rf, acc)

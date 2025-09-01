@@ -239,17 +239,15 @@ while isready(chan)
     push!(records, take!(chan))
 end
 @testset "check records" begin
-    if VERSION >= v"1.3"
-        @test Set(records) == Set([
-            (Union{}[], [1]) => [1],
-            (Union{}[], [2]) => [2],
-            (Union{}[], [3]) => [3],
-            (Union{}[], [4]) => [4],
-            ([1], [2]) => [1, 2],
-            ([3], [4]) => [3, 4],
-            ([1, 2], [3, 4]) => [1, 2, 3, 4],
-        ])
-    end
+    @test Set(records) == Set([
+        (Union{}[], [1]) => [1],
+        (Union{}[], [2]) => [2],
+        (Union{}[], [3]) => [3],
+        (Union{}[], [4]) => [4],
+        ([1], [2]) => [1, 2],
+        ([3], [4]) => [3, 4],
+        ([1, 2], [3, 4]) => [1, 2, 3, 4],
+    ])
 end
 records
 

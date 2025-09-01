@@ -128,12 +128,10 @@ function xf_demean2(xs, ys)
     return Map(((x, y),) -> (x - xmean, y - ymean))
 end
 
-if VERSION >= v"1.1"                                                   #src
-    @test begin
-        s = zip(xs, ys) |> xf_demean2(xs, ys) |> xf_mdot |> sum
-        s / nonmissings
-    end == 0.5
-end                                                                    #src
+@test begin
+    s = zip(xs, ys) |> xf_demean2(xs, ys) |> xf_mdot |> sum
+    s / nonmissings
+end == 0.5
 
 # In `xf_demean2`, we used [`Broadcasting`](@ref) transducer to
 # broadcast elements of the tuple `(1, x, y)` over the reducing
@@ -177,9 +175,6 @@ xs = [
     missing 6       7       missing
 ]
 
-if VERSION < v"1.1"
-    using Compat: eachcol
-end
 @test begin
     eachcol(xs) |> Broadcasting() |> NotA(Missing) |> sum
 end == [3, 12, 13]
@@ -344,12 +339,9 @@ xs = pairs([1, 3, missing, 0]);
 # `xf(xs)` as well as reducing function transformation `xf'(rf)`.
 # Thus, the following calls are equivalent:
 
-#src `xf(xs)` impossible before https://github.com/JuliaLang/julia/pull/31916
-@dedent if VERSION >= v"1.3"
-    @assert foldxl(rf, xf, xs) == (4 => 0, 2 => 3)
-    @assert foldxl(rf, xf(xs)) == (4 => 0, 2 => 3)
-    @assert foldxl(xf'(rf), xs) == (4 => 0, 2 => 3)
-end
+@assert foldxl(rf, xf, xs) == (4 => 0, 2 => 3)
+@assert foldxl(rf, xf(xs)) == (4 => 0, 2 => 3)
+@assert foldxl(xf'(rf), xs) == (4 => 0, 2 => 3)
 
 # By exploiting this equality, we can fuse more computations by moving
 # the transformation on the side of reducing function.  For example,

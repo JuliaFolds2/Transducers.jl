@@ -64,7 +64,7 @@ include("preamble.jl")
                 (reshape([1:9;], (3, 3)), [10:3:34;]),
                 ]
             xs = zip(arrays...)
-            VERSION >= v"1.1-" && @test xs isa Iterators.Zip
+            @test xs isa Iterators.Zip
             @test foldl(+, MapSplat(*), xs) == sum(map(*, arrays...))
         end
     end
@@ -104,7 +104,6 @@ include("preamble.jl")
             (Iterators.product(10:12, 20:23), randn(3, 4)),
             (randn(3, 4), Iterators.product(30:32, 40:43)),
         ])
-            VERSION >= v"1.1-" || break
             xs = zip(products...)
             @test collect(Map(identity), xs) == vec(collect(xs))
         end

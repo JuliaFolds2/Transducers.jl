@@ -1,15 +1,8 @@
 module TransducersDataFramesExt
 
-if isdefined(Base, :get_extension)
-    using Transducers
-    using DataFrames
-else
-    using ..Transducers
-    using ..DataFrames
-end
+using Transducers
+using DataFrames
 
-Transducers.asfoldable(df::DataFrames.AbstractDataFrame) = DataFrames.eachrow(df)
-# We can't use `Compat.eachrow` here.  See:
-# https://github.com/JuliaData/DataFrames.jl/pull/2067
+Transducers.asfoldable(df::DataFrames.AbstractDataFrame) = eachrow(df)
 
 end #module
