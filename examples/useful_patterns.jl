@@ -254,7 +254,7 @@ end
 # Note that fold with `push!!` throws when the input is empty.  To
 # obtain an empty vector when the input is empty or all filtered out,
 # we need to specify `init`.
-# [MicroCollections.jl](https://github.com/JuliaFolds/MicroCollections.jl)
+# [MicroCollections.jl](https://github.com/JuliaFolds2/MicroCollections.jl)
 # includes a library of collections useful as `init`.  Here, we can
 # use `EmptyVector`:
 

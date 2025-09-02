@@ -32,7 +32,7 @@ type-stability.
   [StructArrays.jl](https://github.com/JuliaArrays/StructArrays.jl),
   [TypedTables.jl](https://github.com/JuliaData/TypedTables.jl), etc.
   using [Tables.jl](https://github.com/JuliaData/Tables.jl) and
-  [BangBang.jl](https://github.com/JuliaFolds/BangBang.jl) API
+  [BangBang.jl](https://github.com/JuliaFolds2/BangBang.jl) API
   (see [`copy`](@ref), etc.).
 * [OnlineStats.jl](https://github.com/joshday/OnlineStats.jl)
   integration.
@@ -40,7 +40,7 @@ type-stability.
   [typocalypse](https://discourse.julialang.org/search?q=typocalypse)-free
   implementation of `map`, `collect`, and alike based on
   mutate-or-widen strategy implemented in
-  [BangBang.jl](https://github.com/JuliaFolds/BangBang.jl).
+  [BangBang.jl](https://github.com/JuliaFolds2/BangBang.jl).
 * User interface-agnostic progress bar support based on
   [ProgressLogging.jl](https://github.com/JunoLab/ProgressLogging.jl)
   that works with threaded and distributed processing (see
