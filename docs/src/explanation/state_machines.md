@@ -250,7 +250,7 @@ also assumes that the transition of the prelude accumulator which is not the
 case (see, e.g., `ReduceSplitBy`). Instead, several [`__foldl__`](@ref)
 methods implement this strategy using what we call _tail-call
 function-barrier_ pattern (ref: [an
-example](https://github.com/JuliaFolds/Transducers.jl/blob/427f3d0bd964a62fce29c62b42b7e9d6d8c33ced/src/processes.jl#L208-L215)).
+example](https://github.com/JuliaFolds2/Transducers.jl/blob/427f3d0bd964a62fce29c62b42b7e9d6d8c33ced/src/processes.jl#L208-L215)).
 
 For a previous discussion on this strategy, see also: [Tail-call optimization
 and function-barrier -based accumulation in loops - Internals & Design -

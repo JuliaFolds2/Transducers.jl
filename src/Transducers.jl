@@ -100,7 +100,6 @@ using InitialValues:
     hasinitialvalue
 using Logging: @logmsg, LogLevel
 using MicroCollections: UndefVector, UndefArray
-using Requires
 using Accessors: @optic, @set, set, setproperties
 using SplittablesBase: SplittablesBase, amount, halve
 import ConstructionBase
@@ -152,18 +151,5 @@ const OSNonZeroNObsError = ArgumentError(
     "An `OnlineStat` with one or more observations cannot be used with " *
     "`foldxt` and `foldxd`.",
 )
-
-if !isdefined(Base,:get_extension)
-    using Requires
-    import Adapt
-    include("../ext/TransducersAdaptExt.jl")
-    function __init__()
-        @require BlockArrays="8e7c35d0-a365-5155-bbbb-fb81a777f24e" include("../ext/TransducersBlockArraysExt.jl")
-        @require LazyArrays="5078a376-72f3-5289-bfd5-ec5146d43c02" include("../ext/TransducersLazyArraysExt.jl")
-        @require DataFrames="a93c6f00-e57d-5684-b7b6-d8193f3e46c0" include("../ext/TransducersDataFramesExt.jl")
-        @require OnlineStatsBase="925886fa-5bf2-5e8e-b522-a9147a512338" include("../ext/TransducersOnlineStatsBaseExt.jl")
-        @require Referenceables="42d2dcc6-99eb-4e98-b66c-637b7d73030e" include("../ext/TransducersReferenceablesExt.jl")
-    end
-end
 
 end # module

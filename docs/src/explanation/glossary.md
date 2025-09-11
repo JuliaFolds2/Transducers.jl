@@ -144,13 +144,13 @@ An executor such as [`SequentialEx`](@ref), [`ThreadedEx`](@ref) and
 [`DistributedEx`](@ref) specifies the execution mechanism of a fold. These
 executors provide a unified mechanism for choosing underlying execution
 mechanism for Transducers.jl and its related packages such as
-[Folds.jl](https://github.com/JuliaFolds/Folds.jl) and
-[FLoops.jl](https://github.com/JuliaFolds/FLoops.jl). Typically, the API
+[Folds.jl](https://github.com/JuliaFolds2/Folds.jl) and
+[FLoops.jl](https://github.com/JuliaFolds2/FLoops.jl). Typically, the API
 functions take an executor as the last optional argument. In addition to the
 executors provided by Transducers.jl (see [Executors](@ref man-executor)
 section in the manual), additional executors are provided from external
 packages such as
-[FoldsThreads.jl](https://github.com/JuliaFolds/FoldsThreads.jl) (various
+[FoldsThreads.jl](https://github.com/JuliaFolds2/FoldsThreads.jl) (various
 thread-based executors) and
 [FoldsCUDA.jl](https://github.com/JuliaFolds/FoldsCUDA.jl) (a CUDA-based
 executor).

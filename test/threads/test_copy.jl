@@ -2,7 +2,7 @@ module TestCopy
 
 include("../preamble.jl")
 import Tables
-using Compat: Iterators
+using Base: Iterators
 using DataFrames: DataFrame, eachrow
 using StructArrays: StructVector, StructArray
 using TypedTables: Table

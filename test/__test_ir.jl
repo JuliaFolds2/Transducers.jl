@@ -61,9 +61,7 @@ end
     rf = maybe_usesimd(Reduction(Cat(), +), true)
     ir = llvm_ir(transduce, (rf, 0.0, coll))
     @debug "Cat SIMD" LLVM_IR=Text(ir)
-    @static if VERSION < v"1.10-"
-        @test nmatches(r"fadd (fast )?<[0-9]+ x double>", ir) >= 9
-    end
+    @test_broken nmatches(r"fadd (fast )?<[0-9]+ x double>", ir) >= 9
 end
 
 unsafe_setter(ys) =

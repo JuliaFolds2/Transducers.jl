@@ -6,7 +6,6 @@ using Distributed: addprocs, nworkers
 using Test
 
 if get(ENV, "CI", "false") == "true"
-    VERSION < v"1.8-" && # workaround the hang in CI
     addprocs(3)
 
     # Tests in `PerformanceTestTools.@include_foreach` might cause
@@ -25,7 +24,7 @@ end
         if lowercase(get(ENV, "JULIA_PKGEVAL", "false")) == "true"
             @info "Skipping doctests on PkgEval."
             continue
-        elseif !(v"1.6" <= VERSION < v"1.7-")
+        elseif !(v"1.10" <= VERSION < v"1.11-")
             @info "Skipping doctests on Julia $VERSION."
             continue
         end

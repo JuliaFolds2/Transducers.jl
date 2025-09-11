@@ -239,17 +239,15 @@ while isready(chan)
     push!(records, take!(chan))
 end
 @testset "check records" begin
-    if VERSION >= v"1.3"
-        @test Set(records) == Set([
-            (Union{}[], [1]) => [1],
-            (Union{}[], [2]) => [2],
-            (Union{}[], [3]) => [3],
-            (Union{}[], [4]) => [4],
-            ([1], [2]) => [1, 2],
-            ([3], [4]) => [3, 4],
-            ([1, 2], [3, 4]) => [1, 2, 3, 4],
-        ])
-    end
+    @test Set(records) == Set([
+        (Union{}[], [1]) => [1],
+        (Union{}[], [2]) => [2],
+        (Union{}[], [3]) => [3],
+        (Union{}[], [4]) => [4],
+        ([1], [2]) => [1, 2],
+        ([3], [4]) => [3, 4],
+        ([1, 2], [3, 4]) => [1, 2, 3, 4],
+    ])
 end
 records
 
@@ -304,7 +302,7 @@ end
 # enough" to fit the resulting elements.
 #
 # For generic containers (e.g., various table types), use
-# [`BangBang.Empty`](https://juliafolds.github.io/BangBang.jl/dev/#BangBang.NoBang.singletonof-Union{Tuple{T},%20Tuple{Type{T},Any}}%20where%20T)
+# [`BangBang.Empty`](https://juliafolds2.github.io/BangBang.jl/dev/#BangBang.NoBang.Empty)
 # as the empty initial value.  This is useful for creating a table
 # object such as
 # [`DataFrame`](https://github.com/JuliaData/DataFrames.jl) as the
@@ -423,7 +421,7 @@ end
 # strategy is more appropriate.  However, it is not ideal to allocate
 # a small container like `Dict(y => 1)` in the heap for each
 # iteration.
-# [MicroCollections.jl](https://github.com/JuliaFolds/MicroCollections.jl)
+# [MicroCollections.jl](https://github.com/JuliaFolds2/MicroCollections.jl)
 # provides singleton (and empty) containers that are designed for this
 # usecase.  The `SingletonDict` is "upcast" to the mutable `Dict` in
 # the first invocation when merged with BangBang.jl functions:

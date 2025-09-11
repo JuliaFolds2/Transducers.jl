@@ -2,7 +2,6 @@
 
 [![Stable documentation][docs-stable-img]][docs-stable-url]
 [![Latest documentation][docs-dev-img]][docs-dev-url]
-[![Travis Status][travis-img]][travis-url]
 [![codecov.io][codecov-img]][codecov-url]
 [![Coverage Status][coveralls-img]][coveralls-url]
 [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
@@ -49,7 +48,7 @@ GPU-based parallelism.
 * [Folds.jl](https://github.com/JuliaFolds2/Folds.jl) implements parallelized
   `Base`-like API based on Transducers.jl.  This package can be used without
   knowing anything about transducers.
-* [FLoops.jl](https://github.com/JuliaFolds/FLoops.jl) provides `for`-loop
+* [FLoops.jl](https://github.com/JuliaFolds2/FLoops.jl) provides `for`-loop
   syntax for using the loop executed by the Transducers.jl protocol.
 * [BangBang.jl](https://github.com/JuliaFolds2/BangBang.jl) implements
   mutate-or-widen API.  This is the foundation of
@@ -68,9 +67,7 @@ GPU-based parallelism.
 [docs-stable-url]: https://juliafolds2.github.io/Transducers.jl/stable
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: https://juliafolds2.github.io/Transducers.jl/dev
-[travis-img]: https://travis-ci.com/JuliaFolds/Transducers.jl.svg?branch=master
-[travis-url]: https://travis-ci.com/JuliaFolds/Transducers.jl
-[codecov-img]: http://codecov.io/github/JuliaFolds/Transducers.jl/coverage.svg?branch=master
-[codecov-url]: http://codecov.io/github/JuliaFolds/Transducers.jl?branch=master
-[coveralls-img]: https://coveralls.io/repos/JuliaFolds/Transducers.jl/badge.svg?branch=master&service=github
-[coveralls-url]: https://coveralls.io/github/JuliaFolds/Transducers.jl?branch=master
+[codecov-img]: http://codecov.io/github/JuliaFolds2/Transducers.jl/coverage.svg?branch=master
+[codecov-url]: http://codecov.io/github/JuliaFolds2/Transducers.jl?branch=master
+[coveralls-img]: https://coveralls.io/repos/JuliaFolds2/Transducers.jl/badge.svg?branch=master&service=github
+[coveralls-url]: https://coveralls.io/github/JuliaFolds2/Transducers.jl?branch=master

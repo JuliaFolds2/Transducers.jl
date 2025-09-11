@@ -2,11 +2,7 @@ module TestShow
 
 include("preamble.jl")
 
-if VERSION >= v"1.6-"
-    ==ᵣ = ==ₛ
-else
-    ==ᵣ = ==
-end
+==ᵣ = ==ₛ
 
 xforms = [
     Cat(),
@@ -49,7 +45,6 @@ end
         show(xf) =
         $code
         """
-        VERSION < v"1.5-beta" && occursin("⨟", code) && continue
         xf2 = include_string(@__MODULE__, code)
         @test xf == xf2
     end
@@ -62,7 +57,6 @@ end
         show("text/plain", xf) =
         $code
         """
-        VERSION < v"1.5-beta" && occursin("⨟", code) && continue
         xf2 = include_string(@__MODULE__, code)
         @test xf == xf2
     end
@@ -76,7 +70,6 @@ end
         show("text/plain", rf) =
         $code
         """
-        VERSION < v"1.5-beta" && occursin("⨟", code) && continue
         rf2 = include_string(@__MODULE__, code)
         @test rf == rf2
     end
